@@ -1,0 +1,138 @@
+[
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#A/3",
+    "variant": "A",
+    "step": 3,
+    "checks": [
+      {
+        "name": "нет горизонтального скролла на 390px",
+        "ok": true
+      },
+      {
+        "name": "share-CTA виден",
+        "ok": true
+      },
+      {
+        "name": "чип источника виден",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:33.147Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#B/3",
+    "variant": "B",
+    "step": 3,
+    "checks": [
+      {
+        "name": "нет горизонтального скролла на 390px",
+        "ok": true
+      },
+      {
+        "name": "share-CTA виден",
+        "ok": true
+      },
+      {
+        "name": "чип источника виден",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:33.776Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#C/3",
+    "variant": "C",
+    "step": 3,
+    "checks": [
+      {
+        "name": "нет горизонтального скролла на 390px",
+        "ok": true
+      },
+      {
+        "name": "share-CTA виден",
+        "ok": true
+      },
+      {
+        "name": "чип источника виден",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:34.361Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#D/3",
+    "variant": "D",
+    "step": 3,
+    "checks": [
+      {
+        "name": "нет горизонтального скролла на 390px",
+        "ok": true
+      },
+      {
+        "name": "share-CTA виден",
+        "ok": true
+      },
+      {
+        "name": "чип источника виден",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:34.996Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/variant-a.html",
+    "variant": "A",
+    "step": 1,
+    "at": "2026-09-12T16:48:35.086Z",
+    "consoleErrors": [],
+    "checks": [
+      {
+        "name": "точка входа variant-a.html открывает прототип сама (самодостаточный файл)",
+        "ok": true
+      }
+    ]
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/variant-b.html",
+    "variant": "B",
+    "step": 1,
+    "at": "2026-09-12T16:48:35.187Z",
+    "consoleErrors": [],
+    "checks": [
+      {
+        "name": "точка входа variant-b.html открывает прототип сама (самодостаточный файл)",
+        "ok": true
+      }
+    ]
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/variant-c.html",
+    "variant": "C",
+    "step": 1,
+    "at": "2026-09-12T16:48:35.275Z",
+    "consoleErrors": [],
+    "checks": [
+      {
+        "name": "точка входа variant-c.html открывает прототип сама (самодостаточный файл)",
+        "ok": true
+      }
+    ]
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/variant-d.html",
+    "variant": "D",
+    "step": 1,
+    "at": "2026-09-12T16:48:35.354Z",
+    "consoleErrors": [],
+    "checks": [
+      {
+        "name": "точка входа variant-d.html открывает прототип сама (самодостаточный файл)",
+        "ok": true
+      }
+    ]
+  }
+]

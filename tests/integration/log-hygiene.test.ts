@@ -1,0 +1,181 @@
+// Гигиена журнала НА ЖИВОМ СЕРВЕРЕ (AC-foundation-16).
+//
+// Почему этот файл появился отдельно от `tests/unit/source-guards.test.ts`: страж по
+// исходнику проверяет, что запрещённые ИМЕНА не передаются в вызовы журналирования, и он
+// был зелёным — а в журнал всё равно уезжали токен и полный адрес, потому что опасной
+// оказалась ПРОИЗВОЛЬНАЯ СТРОКА в разрешённом поле `route` (слепое ревью, RV-foundation-01).
+//
+// Отсюда правило, которое этот файл закрепляет: журнал проверяется ПРОГОНОМ ЗАПРОСА через
+// сервер и ЧТЕНИЕМ того, что он написал. Тест, отключающий журнал заглушкой `sink: () => {}`,
+// проверяет, что код не падает, и ничего не проверяет о содержимом.
+
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import type { FastifyInstance } from 'fastify';
+import type { DbPool } from '@n4/db';
+import { createLogger, REDACTED, SERVICE_LOG_FIELDS } from '@n4/shared';
+import { buildServer } from '../../apps/api/src/server.js';
+import { SESSION_COOKIE_NAME } from '../../apps/api/src/session/create-device-session.js';
+import { migratedPool, truncateAll } from '../helpers/db.js';
+import { testApiConfig } from '../helpers/config.js';
+
+const LEAKED_TOKEN = 'review-cookie-token-0123456789';
+const LEAKED_IP = '203.0.113.77';
+
+let pool: DbPool;
+let app: FastifyInstance;
+let lines: string[];
+
+beforeAll(async () => {
+  pool = await migratedPool('n4-tests-log-hygiene');
+  lines = [];
+  app = buildServer({
+    config: testApiConfig(),
+    pool,
+    // Настоящий журнал сервиса: те же правила редактирования, что в бою.
+    logger: createLogger({ service: 'api', allowedFields: SERVICE_LOG_FIELDS, sink: (line) => lines.push(line) }),
+  });
+  await app.ready();
+}, 60_000);
+
+afterAll(async () => {
+  await app.close();
+  await pool.end();
+});
+
+beforeEach(async () => {
+  await truncateAll(pool);
+  lines.length = 0;
+});
+
+describe('гигиена журнала на живом сервере', () => {
+  it('журнал не содержит секретов и полного адреса даже на ошибочном запросе к неизвестному маршруту', async () => {
+    // Точное воспроизведение прогона ревью: неизвестный маршрут, секреты в query, битое тело.
+    const response = await app.inject({
+      method: 'POST',
+      url: `/unknown?token=${LEAKED_TOKEN}&ip=${LEAKED_IP}`,
+      headers: { 'content-type': 'application/json', 'x-forwarded-for': LEAKED_IP },
+      payload: '{bad',
+    });
+
+    expect([400, 404]).toContain(response.statusCode);
+    expect(lines.length).toBeGreaterThan(0);
+    const journal = lines.join('\n');
+
+    // Ни токена из query, ни полного адреса, ни самой строки запроса.
+    expect(journal).not.toContain(LEAKED_TOKEN);
+    expect(journal).not.toContain(LEAKED_IP);
+    expect(journal).not.toContain('/unknown?');
+    expect(journal).not.toContain('token=');
+
+    // Разбор инцидента при этом возможен: метод, статус и ПОСТОЯННЫЙ идентификатор маршрута.
+    const failure = lines.map((line) => JSON.parse(line)).find((entry) => entry.event === 'request_failed');
+    expect(failure).toBeDefined();
+    expect(failure.route).toBe('unmatched');
+    // Пути в событии НЕТ ВООБЩЕ: сегменты пишет тот же клиент, что и query.
+    expect(failure.path).toBeUndefined();
+    expect(failure.method).toBe('POST');
+    expect(typeof failure.status).toBe('number');
+    // Идентификатор запроса и длительность — чтобы жалобу «меня отсекли» можно было найти
+    // в журнале по ручке, а не по времени и догадкам.
+    expect(typeof failure.request_id).toBe('string');
+    expect(failure.request_id.length).toBeGreaterThan(8);
+    expect(typeof failure.duration_ms).toBe('number');
+  });
+
+
+  it('чувствительные значения в СЕГМЕНТАХ пути не попадают в журнал', async () => {
+    // Вторая редакция места писала путь без query и казалась безопасной. Судья предъявил
+    // этот прогон: сегменты пути пишет ТОТ ЖЕ клиент, и «очистить» их нечем — поэтому
+    // в журнал уходит только шаблон маршрута, сочинённый нами.
+    const response = await app.inject({
+      method: 'GET',
+      url: `/unknown/${LEAKED_TOKEN}/${LEAKED_IP}`,
+      headers: { 'x-forwarded-for': LEAKED_IP },
+    });
+    expect(response.statusCode).toBe(404);
+
+    const journal = lines.join('\n');
+    expect(journal).not.toContain(LEAKED_TOKEN);
+    expect(journal).not.toContain(LEAKED_IP);
+    expect(journal).not.toContain('/unknown/');
+
+    // Неизвестный маршрут пишется событием `request_not_found`: всплеск `404` — сигнал, и
+    // молчать о нём значит остаться без него. В событии — только наша метка.
+    const notFound = lines.map((line) => JSON.parse(line)).find((entry) => entry.event === 'request_not_found');
+    expect(notFound).toBeDefined();
+    expect(notFound.route).toBe('unmatched');
+    expect(notFound.path).toBeUndefined();
+    expect(notFound.method).toBe('GET');
+  });
+
+  it('известный маршрут пишется ШАБЛОНОМ, а не строкой запроса', async () => {
+    // Шаблон — это то, что написали МЫ при регистрации маршрута; строка запроса — то, что
+    // написал клиент. Разница между ними и есть всё содержание этой находки.
+    await app.inject({ method: 'POST', url: '/api/v1/auth/device', headers: { 'content-type': 'application/json' }, payload: '{bad' });
+    const failure = lines.map((line) => JSON.parse(line)).find((entry) => entry.event === 'request_failed');
+    expect(failure?.route).toBe('/api/v1/auth/device');
+  });
+
+  it('поле вне закрытого списка затирается, а не печатается как есть', async () => {
+    // Разворот правила: разрешено ПЕРЕЧИСЛЕННОЕ. Список запрещённых значений всегда неполон,
+    // список разрешённых полей конечен и виден целиком.
+    const probe = createLogger({ service: 'api', allowedFields: SERVICE_LOG_FIELDS, sink: (line) => lines.push(line) });
+    probe.info('probe_event', { route: '/api/v1/auth/device', unexpected_field: `${LEAKED_TOKEN} ${LEAKED_IP}` });
+
+    const entry = JSON.parse(lines[lines.length - 1] ?? '{}');
+    expect(entry.route).toBe('/api/v1/auth/device');
+    // Поле СОХРАНЕНО и затёрто: исчезнувшее поле выглядело бы как «его и не было».
+    expect(Object.keys(entry)).toContain('unexpected_field');
+    expect(entry.unexpected_field).toBe(REDACTED);
+  });
+
+  it('журнал реальной сессии не содержит сырого токена cookie', async () => {
+    const created = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/device',
+      headers: { 'x-forwarded-for': LEAKED_IP },
+    });
+    expect(created.statusCode).toBe(201);
+
+    const setCookie = created.headers['set-cookie'];
+    const raw = Array.isArray(setCookie) ? setCookie[0] ?? '' : setCookie ?? '';
+    const token = raw.split(';')[0]?.split('=')[1] ?? '';
+    expect(token.length).toBeGreaterThanOrEqual(43);
+
+    // Повтор с действующей cookie: токен уходит В ЗАПРОСЕ и не имеет права попасть в журнал.
+    await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/device',
+      headers: { 'x-forwarded-for': LEAKED_IP, cookie: `${SESSION_COOKIE_NAME}=${token}` },
+    });
+
+    const journal = lines.join('\n');
+    expect(journal).not.toContain(token);
+    expect(journal).not.toContain(LEAKED_IP);
+    // Усечённый префикс — это НЕ полный адрес, он остаётся читаемым.
+    expect(journal).toContain('203.0.113.0/24');
+  });
+
+  it('FR-LOOK-007/DEC-A-050: адрес presigned-URL кадра не входит в закрытый список разрешённых полей', () => {
+    // Слой 1 — проверка ДЕКЛАРАЦИИ (`security.md`, «Фото отдаются только presigned-URL…»):
+    // маршруты `scans.ts`/`scans-correct.ts` НЕ логируют `photo_url` нигде (проверено
+    // чтением исходника), но реальная защита — не отсутствие вызова журнала сегодня, а то,
+    // что список разрешённых полей ЗАКРЫТ и `photo_url` в нём нет: даже случайное `logger.
+    // error('x', row)` со всей строкой БД не пропустило бы адрес наружу.
+    expect(SERVICE_LOG_FIELDS).not.toContain('photo_url');
+    expect(SERVICE_LOG_FIELDS).not.toContain('photo_url_expires_at');
+  });
+
+  it('FR-LOOK-007/DEC-A-050: даже гипотетическая попытка залогировать photo_url затирается редактором (мутация: временно добавить поле в SERVICE_LOG_FIELDS даёт красный)', () => {
+    const leakedPhotoUrl = 'https://storage.internal.example/n4-photos/device-session/scan-id.normalized.jpg?X-Amz-Signature=deadbeef0123&X-Amz-Expires=900';
+    const probe = createLogger({ service: 'api', allowedFields: SERVICE_LOG_FIELDS, sink: (line) => lines.push(line) });
+    probe.error('hypothetical_photo_leak', { route: '/api/v1/scans/:id', photo_url: leakedPhotoUrl });
+
+    const entry = JSON.parse(lines[lines.length - 1] ?? '{}');
+    // Поле СОХРАНЕНО (как и весь редактор делает с запрещённым/незаявленным полем) и ЗАТЁРТО.
+    expect(Object.keys(entry)).toContain('photo_url');
+    expect(entry.photo_url).toBe(REDACTED);
+    expect(JSON.stringify(entry)).not.toContain(leakedPhotoUrl);
+    expect(JSON.stringify(entry)).not.toContain('X-Amz-Signature');
+  });
+});

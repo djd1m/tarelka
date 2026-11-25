@@ -1,0 +1,380 @@
+# N4 «Тарелка» — скелет стека. Код ещё не написан: сервисы api/recognizer/web НЕ соберутся,
+# пока фича `foundation` не создаст package.json монорепо и исходники. Поэтому они собраны в
+# профиль `app` — без него поднимаются только db и storage, и файл остаётся проверяемым
+# (`docker compose config`) до появления кода.
+#
+# Перед ЛЮБЫМ `docker compose up`:
+#   node ../../.claude/hooks/check-ports.cjs .          # что смотрит наружу (Правило №0)
+#   bash ../../scripts/check-port-conflicts.sh .        # свободно ли то, что мы просим
+# Две проверки, а не одна: это разные вопросы, и ни одна не заменяет другую.
+name: ${N4_COMPOSE_PROJECT:-n4-tarelka}
+
+services:
+
+  # ─── Данные. Публикации на хост нет вовсе: соседи по сети compose ходят по имени db:5432 ───
+  db:
+    image: postgres:16.15-alpine@sha256:cf78e76683b9ca8c5733cbbdce6c9262b45b6767934dd0a95e671f9a0fc20685
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: n4_admin
+      POSTGRES_DB: n4
+      POSTGRES_PASSWORD: ${N4_DB_ADMIN_PASSWORD:?задайте пароль администратора БД — пустое значение не означает «без пароля»}
+      # Пароль роли приложения нужен БУТСТРАПУ кластера: роль — объект кластера, и её
+      # пароль не имеет права лежать в SQL-файле, который коммитится (фича foundation).
+      N4_DB_APP_PASSWORD: ${N4_DB_APP_PASSWORD:?задайте пароль роли приложения}
+      TZ: Europe/Moscow
+    # expose — документирующая запись; доступ внутри сети есть и без неё. Публикации нет.
+    expose: ["5432"]
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      # Роли n4_migrate и n4_app создаются ОДИН раз при первой инициализации тома.
+      # Таблицы создаёт миграция 001 из-под n4_migrate — это уже объекты схемы.
+      - ./scripts/init-foundation-db.sh:/docker-entrypoint-initdb.d/10-init-foundation-db.sh:ro
+    networks: [private]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U n4_admin -d n4"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  # ─── Приватный бакет фото. Портов не публикует; консоль наружу не выставляется ───
+  storage:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z@sha256:a1ea29fa28355559ef137d71fc570e508a214ec84ff8083e39bc5428980b015e
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${N4_STORAGE_ROOT_USER:?задайте пользователя MinIO — minioadmin это готовая точка входа, а не «временно для тестов»}
+      MINIO_ROOT_PASSWORD: ${N4_STORAGE_ROOT_PASSWORD:?задайте пароль MinIO — значение по умолчанию запрещено}
+      TZ: Europe/Moscow
+    expose: ["9000", "9001"]
+    volumes:
+      - storage-data:/data
+    networks: [private]
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # ─── Провижининг бакета и IAM-пользователя приложения (фича `scan-pipeline`) ───
+  # ОТКЛОНЕНИЕ/дополнение, названное явно (`receipts/impl-scan-pipeline.md`): `foundation`
+  # объявила `N4_S3_ACCESS_KEY`/`N4_S3_SECRET_KEY` переменными `api`/`recognizer`, но НИГДЕ
+  # не создавала соответствующего пользователя MinIO — работали бы только ROOT-креды.
+  # `api`/`recognizer` не должны держать root-пароль хранилища: он даёт больше прав, чем
+  # нужно операции с одним бакетом. Одноразовый контейнер создаёт бакет и пользователя с
+  # правами ТОЛЬКО на него, затем завершается — это НЕ сервис продукта.
+  storage-init:
+    # `minio/mc` не доступен для вытягивания в этой сети (проверено 2026-09-12: pull access
+    # denied); образ `minio/minio` уже используется сервисом `storage` и несёт СВОЙ `mc`
+    # (используется его же healthcheck'ом, `test: mc ready local`) — переиспользуем ЕГО, а
+    # не заводим вторую зависимость от недоступного реестра.
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z@sha256:a1ea29fa28355559ef137d71fc570e508a214ec84ff8083e39bc5428980b015e
+    profiles: [app, dev, edge, test]
+    restart: "no"
+    environment:
+      MC_HOST_local: http://${N4_STORAGE_ROOT_USER:?}:${N4_STORAGE_ROOT_PASSWORD:?}@storage:9000
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        set -e
+        mc mb --ignore-existing "local/${N4_S3_BUCKET:-n4-photos}"
+        mc admin user add local "${N4_S3_ACCESS_KEY:?}" "${N4_S3_SECRET_KEY:?}" || true
+        printf '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:*"],"Resource":["arn:aws:s3:::%s","arn:aws:s3:::%s/*"]}]}' \
+          "${N4_S3_BUCKET:-n4-photos}" "${N4_S3_BUCKET:-n4-photos}" > /tmp/policy.json
+        mc admin policy create local n4-photos-rw /tmp/policy.json || true
+        mc admin policy attach local n4-photos-rw --user "${N4_S3_ACCESS_KEY:?}" || true
+    networks: [private]
+    depends_on:
+      storage: { condition: service_healthy }
+
+  # ─── API: 13 маршрутов канона, приём и нормализация фото, квоты, initData ───
+  api:
+    build:
+      context: .
+      target: api
+    # `edge` в списке — не украшение: proxy зависит от api и web, и профиль `edge`
+    # БЕЗ них не поднимается вовсе («depends on undefined service»). Найдено первым
+    # настоящим запуском профиля edge.
+    profiles: [app, dev, edge]
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      TZ: Europe/Moscow
+      # Дефолта нет намеренно: APP_ORIGIN определяет КАЖДУЮ выдаваемую наружу ссылку,
+      # и тихий localhost сделал бы все выданные адреса нерабочими при зелёных тестах.
+      APP_ORIGIN: ${APP_ORIGIN:?внешний адрес обязателен — он определяет каждую выдаваемую ссылку}
+      # Роль n4_app создаётся миграцией 001 (фича foundation), а не этим файлом.
+      DATABASE_URL: postgresql://n4_app:${N4_DB_APP_PASSWORD:?задайте пароль роли приложения}@db:5432/n4
+      S3_ENDPOINT: http://storage:9000
+      S3_BUCKET: ${N4_S3_BUCKET:-n4-photos}
+      S3_ACCESS_KEY: ${N4_S3_ACCESS_KEY:?задайте ключ доступа приложения к бакету}
+      S3_SECRET_KEY: ${N4_S3_SECRET_KEY:?задайте секрет доступа приложения к бакету}
+      # Токен бота — только здесь: из него производится секрет HMAC для проверки initData.
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?токен бота обязателен — без него вход через Mini App неисполним}
+      # ── подписка и комиссия. Секретов платёжного провайдера у `web` и `recognizer` нет
+      # и быть не должно: деньги принимает только `api` (`secrets-management.md`).
+      N4_SUBSCRIPTION_PRICE_MINOR: "${N4_SUBSCRIPTION_PRICE_MINOR:?цена подписки в копейках не задана}"
+      N4_SUBSCRIPTION_PERIOD_DAYS: "${N4_SUBSCRIPTION_PERIOD_DAYS:?длина оплаченного периода не задана}"
+      N4_COMMISSION_HOLD_DAYS: "${N4_COMMISSION_HOLD_DAYS:?окно возврата до выплаты комиссии не задано}"
+      N4_SCAN_LIMIT_PRO: "${N4_SCAN_LIMIT_PRO:?потолок распознаваний подписчика не задан}"
+      N4_PAYMENTS_MODE: "${N4_PAYMENTS_MODE:?режим платежей не задан — он определяет, берутся ли с людей настоящие деньги}"
+      # Реквизиты провайдера. Форма `:-` (пустое по умолчанию) здесь ЗАКОННА и это
+      # единственное исключение среди секретов: в режиме `fake` их нет и быть не должно, а в
+      # режиме `live` пустое значение валит СТАРТ — проверяет `assertPaymentsEnv`, а не
+      # compose. Форма `:?` сделала бы невозможным демонстрационный стенд без ИП.
+      N4_PAYMENTS_PROVIDER: "${N4_PAYMENTS_PROVIDER:-}"
+      YOOKASSA_SHOP_ID: "${YOOKASSA_SHOP_ID:-}"
+      YOOKASSA_SECRET_KEY: "${YOOKASSA_SECRET_KEY:-}"
+      YOOKASSA_TEST_MODE: "${YOOKASSA_TEST_MODE:-}"
+      # ТРИ потолка. Отсутствие ЛЮБОГО обязано валить старт процесса (ADR-007): проверка
+      # одной переменной зеленеет при отсутствующей второй, поэтому объявлены все три.
+      N4_SCAN_LIMIT_USER: ${N4_SCAN_LIMIT_USER:?потолок на пользователя не задан — пустое значение не означает «без ограничений»}
+      N4_SCAN_LIMIT_DAY: ${N4_SCAN_LIMIT_DAY:?суточный потолок попыток не задан}
+      N4_ESCALATION_LIMIT_DAY: ${N4_ESCALATION_LIMIT_DAY:?суточный потолок эскалаций не задан}
+      # Пороги ограничения частоты — числа канона §7 (DEC-A-013): 30 мутаций и 120 чтений
+      # в минуту на один ip_prefix. Отсутствие валит старт наравне с потолками: предел,
+      # которого нет, — это отсутствие предела, а не «по умолчанию разумно».
+      N4_RATE_LIMIT_MUTATE_PER_MIN: ${N4_RATE_LIMIT_MUTATE_PER_MIN:?порог частоты для мутирующих маршрутов не задан}
+      N4_RATE_LIMIT_READ_PER_MIN: ${N4_RATE_LIMIT_READ_PER_MIN:?порог частоты для чтения не задан}
+    expose: ["3000"]
+    networks: [private, egress]
+    depends_on:
+      db: { condition: service_healthy }
+      storage: { condition: service_healthy }
+      storage-init: { condition: service_completed_successfully }
+    healthcheck:
+      # Проба переведена с TCP на HTTP в фиче `foundation`: служебный `GET /health` введён
+      # решением по канону (он ВНЕ префикса /api/v1, продуктовых маршрутов по-прежнему 14).
+      # Разница содержательна: TCP-проба говорит «процесс слушает», а этот ответ означает,
+      # что база отвечает на SELECT 1. При недоступной базе он даёт 503, и сервис перестаёт
+      # быть healthy — недоступность источника истины обязана быть видна, а не подразумеваться.
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3000/health',function(r){process.exit(r.statusCode===200?0:1)}).on('error',function(){process.exit(1)})"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # ─── Воркер распознавания: единственный сервис, у которого есть чем позвать модель ───
+  recognizer:
+    build:
+      context: .
+      target: recognizer
+    profiles: [app, dev, edge]
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      TZ: Europe/Moscow
+      DATABASE_URL: postgresql://n4_app:${N4_DB_APP_PASSWORD:?задайте пароль роли приложения}@db:5432/n4
+      S3_ENDPOINT: http://storage:9000
+      S3_BUCKET: ${N4_S3_BUCKET:-n4-photos}
+      S3_ACCESS_KEY: ${N4_S3_ACCESS_KEY:?задайте ключ доступа приложения к бакету}
+      S3_SECRET_KEY: ${N4_S3_SECRET_KEY:?задайте секрет доступа приложения к бакету}
+      # Выбор реализации адаптера. Закрытый набор значений принадлежит КОДУ (fake | live),
+      # переменная только выбирает. Безопасное значение по умолчанию — fake: оно не тратит денег.
+      N4_MODEL_PROVIDER: ${N4_MODEL_PROVIDER:-fake}
+      # Ключа на этой машине нет (DEC-A-009). Пустое значение законно при N4_MODEL_PROVIDER=fake
+      # и ОБЯЗАНО валить старт при live — проверку делает код, потому что условие зависит от режима.
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      # ТРЕТЬЯ реализация (DEC-A-045/046). Та же форма, что у ANTHROPIC_API_KEY: пусто законно
+      # при N4_MODEL_PROVIDER != openrouter, обязано валить старт при openrouter — проверку
+      # делает код `apps/recognizer/src/env.ts`, не compose.
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      N4_SCAN_LIMIT_USER: ${N4_SCAN_LIMIT_USER:?потолок на пользователя не задан}
+      N4_SCAN_LIMIT_DAY: ${N4_SCAN_LIMIT_DAY:?суточный потолок попыток не задан}
+      N4_ESCALATION_LIMIT_DAY: ${N4_ESCALATION_LIMIT_DAY:?суточный потолок эскалаций не задан}
+    networks: [private, egress]
+    depends_on:
+      db: { condition: service_healthy }
+      storage: { condition: service_healthy }
+      storage-init: { condition: service_completed_successfully }
+    # healthcheck не объявлен осознанно: от recognizer не зависит ни один сервис, а проверка
+    # «процесс жив» повторила бы restart: unless-stopped. Молчащий воркер ловится метрикой
+    # «возраст старейшего задания queued > 60 с» (Completion.md, Monitoring), а не healthcheck'ом.
+
+  # ─── Один фронт на PWA и Telegram Mini App. Секретов вызова наружу не имеет — это проверяемо ───
+  web:
+    build:
+      context: .
+      target: web
+    profiles: [app, dev, edge]
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      TZ: Europe/Moscow
+      APP_ORIGIN: ${APP_ORIGIN:?внешний адрес обязателен}
+      API_INTERNAL_URL: http://api:3000
+      # Экран Pro показывает цену и потолки. Секретов платёжного провайдера у `web`
+      # нет и быть не должно — только числа, которые он рисует (`secrets-management.md`).
+      N4_SUBSCRIPTION_PRICE_MINOR: "${N4_SUBSCRIPTION_PRICE_MINOR:?цена подписки в копейках не задана}"
+      N4_SCAN_LIMIT_USER: "${N4_SCAN_LIMIT_USER:?потолок на пользователя не задан}"
+      N4_SCAN_LIMIT_PRO: "${N4_SCAN_LIMIT_PRO:?потолок распознаваний подписчика не задан}"
+      N4_PAYMENTS_MODE: "${N4_PAYMENTS_MODE:?режим платежей не задан — он определяет надпись на кнопке оплаты}"
+      # Имя бота — НЕ секрет (токен только у `api`), но и не литерал в коде: зашитое имя однажды
+      # указало на ЧУЖОГО бота (16.09.2026).
+      TELEGRAM_BOT_USERNAME: "${TELEGRAM_BOT_USERNAME:?имя бота Telegram не задано — кнопка входа повела бы на чужого бота}"
+      NEXT_TELEMETRY_DISABLED: "1"
+    # ХОСТОВОГО ПОРТА У web НЕТ, и это не забывчивость. Черновик публиковал
+    # 127.0.0.1:${N4_WEB_PORT:-4184}:3000 «для прямой отладки»; проверка
+    # `bash ../../scripts/check-port-conflicts.sh .` вернула 1 и назвала причину: web,
+    # опубликованный рядом с proxy, позволяет обойти прокси ВМЕСТЕ СО ВСЕМ, что прокси
+    # гарантирует. Здесь это не абстракция: Caddy держит ограничение частоты, работающее
+    # ДО валидации тела (`security-operation-order`), и прямой путь к web снимает его.
+    # Единственная дверь — профиль `edge` на 127.0.0.1:${N4_EDGE_PORT:-4180}.
+    expose: ["3000"]
+    networks: [private, egress]
+    depends_on:
+      api: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect(3000,'127.0.0.1').on('connect',function(){process.exit(0)}).on('error',function(){process.exit(1)})"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # ─── Единственная публичная дверь: TLS, ограничение частоты ДО валидации, CSP.
+  #     CORS-заголовков НЕ ставит: web и api на одном origin, а два одинаковых заголовка
+  #     ломают CORS молча, и curl этого не показывает.
+  #     Caddyfile создаёт фича foundation; до этого профиль edge поднимать нечего. ───
+  proxy:
+    # Собирается из proxy/Dockerfile, а не берётся готовым: в стандартном образе нет модуля
+    # ограничения частоты, а FR-foundation-8 требует его НА ДВЕРИ — приложенческий покрывает
+    # только api, тогда как через дверь идёт весь трафик, включая web. Базовые образы внутри
+    # закреплены дайджестом, сборка проверяет наличие модуля.
+    build:
+      context: ./proxy
+    # Имя собранного образа объявлено явно: `up` берёт уже собранный, а на чистой машине
+    # compose соберёт его по этому же Dockerfile. Рецепт остаётся в файле, а не подменяется
+    # готовым образом.
+    image: n4-tarelka-proxy:local
+    profiles: [edge]
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Moscow
+      APP_ORIGIN: ${APP_ORIGIN:?внешний адрес обязателен}
+      # Пороги двери — числа канона §7 (DEC-A-013), те же 30 и 120, что у приложения, но
+      # считаются ОТДЕЛЬНО и по адресу клиента двери. Значения по умолчанию нет НИ ЗДЕСЬ,
+      # НИ в Caddyfile: незаданный порог валит загрузку конфигурации, и дверь не
+      # поднимается — предел, которого нет, есть отсутствие предела.
+      N4_PROXY_RATE_MUTATE_PER_MIN: ${N4_PROXY_RATE_MUTATE_PER_MIN:?порог частоты мутаций на двери не задан}
+      N4_PROXY_RATE_READ_PER_MIN: ${N4_PROXY_RATE_READ_PER_MIN:?порог частоты чтения на двери не задан}
+    # 80 и 443 заняты чужим прокси этой машины — ими не пользуемся. Петлевая публикация:
+    # наружу стенд выводит вышестоящий reverse-proxy, а не этот стек.
+    ports: ["127.0.0.1:${N4_EDGE_PORT:-4180}:80"]
+    volumes:
+      # Конфигурация двери создана фичей `foundation`. Без монтирования Caddy поднял бы
+      # страницу-заглушку и стек выглядел бы рабочим, не отдавая ни одного маршрута.
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    # Дверь — ЕДИНСТВЕННЫЙ сервис в сети общего TLS-прокси машины (`public-edge`): снаружи
+    # трафик приходит в неё и только в неё, а `web`, `api`, `db`, `storage` остаются внутри
+    # `private`. Публикация рядом с прокси позволила бы обойти и прокси, и ограничение
+    # частоты (`docker-ports.md`).
+    networks: [private, egress, public-edge]
+    depends_on:
+      web: { condition: service_healthy }
+      api: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:2019/config/"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # ─── Разовый прогон проверок против настоящего PostgreSQL. Не сервис продукта ───
+  # Запускать ТОЛЬКО в отдельном compose-проекте (`-p n4-test`), не в стенде `n4-tarelka`:
+  #   bash scripts/create-test-database.sh -p n4-test   # без -p — отказ, код 2
+  #   docker compose --project-directory . -p n4-test --profile test run --rm test npm run test:integration
+  test:
+    image: node:22.22.0-bookworm-slim@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94
+    profiles: [test]
+    restart: "no"
+    working_dir: /workspace
+    volumes: [".:/workspace"]
+    environment:
+      NODE_ENV: test
+      TZ: Europe/Moscow
+      NEXT_TELEMETRY_DISABLED: "1"
+      # Миграции применяются под n4_admin с SET ROLE n4_migrate — четвёртой учётной записи
+      # ради названия роли не заводится.
+      # ОТДЕЛЬНАЯ БАЗА `n4_test`, а не `n4`. Заслужено 2026-09-13 (DEC-A-051): интеграционные
+      # тесты начинают с TRUNCATE, и, указывая сюда на боевую базу стенда, они стёрли базу
+      # продуктов вместе с импортом USDA. Общий Postgres при этом остаётся один — отдельная
+      # база стоит схемы, а не контейнера и не порта.
+      DATABASE_URL: postgresql://n4_admin:${N4_DB_ADMIN_PASSWORD:?задайте пароль администратора БД}@db:5432/n4_test
+      # Отдельное подключение ПОД РОЛЬЮ ПРИЛОЖЕНИЯ: тест прав проверяет, что n4_app не может
+      # менять схему. Проверять это из-под администратора невозможно по построению.
+      DATABASE_URL_APP: postgresql://n4_app:${N4_DB_APP_PASSWORD:?задайте пароль роли приложения}@db:5432/n4_test
+      N4_RATE_LIMIT_MUTATE_PER_MIN: ${N4_RATE_LIMIT_MUTATE_PER_MIN:?порог частоты для мутирующих маршрутов не задан}
+      N4_RATE_LIMIT_READ_PER_MIN: ${N4_RATE_LIMIT_READ_PER_MIN:?порог частоты для чтения не задан}
+      APP_ORIGIN: ${APP_ORIGIN:?внешний адрес обязателен}
+      S3_ENDPOINT: http://storage:9000
+      S3_BUCKET: ${N4_S3_BUCKET:-n4-photos}
+      S3_ACCESS_KEY: ${N4_S3_ACCESS_KEY:?задайте ключ доступа приложения к бакету}
+      S3_SECRET_KEY: ${N4_S3_SECRET_KEY:?задайте секрет доступа приложения к бакету}
+      # Тесты наружу не ходят: поставщик модели подменяется детерминированным фейком.
+      N4_MODEL_PROVIDER: fake
+      N4_SCAN_LIMIT_USER: ${N4_SCAN_LIMIT_USER:?потолок на пользователя не задан}
+      N4_SCAN_LIMIT_DAY: ${N4_SCAN_LIMIT_DAY:?суточный потолок попыток не задан}
+      N4_ESCALATION_LIMIT_DAY: ${N4_ESCALATION_LIMIT_DAY:?суточный потолок эскалаций не задан}
+      # ── подписка и комиссия. Секретов платёжного провайдера у `web` и `recognizer` нет
+      # и быть не должно: деньги принимает только `api` (`secrets-management.md`).
+      N4_SUBSCRIPTION_PRICE_MINOR: "${N4_SUBSCRIPTION_PRICE_MINOR:?цена подписки в копейках не задана}"
+      N4_SUBSCRIPTION_PERIOD_DAYS: "${N4_SUBSCRIPTION_PERIOD_DAYS:?длина оплаченного периода не задана}"
+      N4_COMMISSION_HOLD_DAYS: "${N4_COMMISSION_HOLD_DAYS:?окно возврата до выплаты комиссии не задано}"
+      N4_SCAN_LIMIT_PRO: "${N4_SCAN_LIMIT_PRO:?потолок распознаваний подписчика не задан}"
+      N4_PAYMENTS_MODE: "${N4_PAYMENTS_MODE:?режим платежей не задан — он определяет, берутся ли с людей настоящие деньги}"
+      # Реквизиты провайдера. Форма `:-` (пустое по умолчанию) здесь ЗАКОННА и это
+      # единственное исключение среди секретов: в режиме `fake` их нет и быть не должно, а в
+      # режиме `live` пустое значение валит СТАРТ — проверяет `assertPaymentsEnv`, а не
+      # compose. Форма `:?` сделала бы невозможным демонстрационный стенд без ИП.
+      N4_PAYMENTS_PROVIDER: "${N4_PAYMENTS_PROVIDER:-}"
+      YOOKASSA_SHOP_ID: "${YOOKASSA_SHOP_ID:-}"
+      YOOKASSA_SECRET_KEY: "${YOOKASSA_SECRET_KEY:-}"
+      YOOKASSA_TEST_MODE: "${YOOKASSA_TEST_MODE:-}"
+    networks: [private]
+    depends_on:
+      db: { condition: service_healthy }
+      storage: { condition: service_healthy }
+      storage-init: { condition: service_completed_successfully }
+
+networks:
+  # Сеть ОБЩЕГО TLS-прокси машины (`ai-hub-tls-proxy`). Объявлена внешней: её создаёт и
+  # держит чужой стек, наш её не создаёт и не удаляет. По ней приходит публичный трафик
+  # на домен `tarelka.aicoding.space` — так же, как у проектов 01 и 02.
+  public-edge:
+    external: true
+    name: talk-ai-public
+  # Хранилища живут только здесь: ни публикации на хост, ни выхода в интернет.
+  #
+  # ПОДСЕТЬ ЗАДАНА ЯВНО (ОТКЛОНЕНИЕ этого worktree, `receipts/impl-scan-pipeline.md`):
+  # у ДРУГОГО параллельного плеча (`n4-tarelka-consent-b`) уже занята подсеть по умолчанию
+  # докеровского пула; на машине параллельно работают несколько изолированных проектов
+  # `N4_COMPOSE_PROJECT`, и общий пул адресов «all predefined address pools have been
+  # fully subnetted» — тот же класс дефекта, что явная подсеть `egress` ниже. Значение
+  # правится под машину переменной, не редактированием этого файла.
+  private:
+    internal: true
+    # То же отклонение независимо внесли ОБА параллельных плеча (`scan-pipeline` и
+    # `consent-and-telegram-auth`) — здесь оставлена ОДНА запись. Довод плеча consent,
+    # который стоит сохранить: `internal: true` не отменяет потребности в адресном
+    # пространстве, поэтому «сеть без выхода наружу» падает ровно так же. Дефолт обязан
+    # отличаться от `N4_EGRESS_SUBNET` и от уже созданных чужих сетей машины.
+    ipam:
+      config:
+        - subnet: ${N4_PRIVATE_SUBNET:-10.85.0.0/24}
+  # Опубликованные порты proxy/web и исходящий доступ api/recognizer к Anthropic и Telegram.
+  egress:
+    driver: bridge
+    # ПОДСЕТЬ ЗАДАНА ЯВНО, и это третий дефект, найденный первым настоящим запуском:
+    # `docker compose up` упал с «all predefined address pools have been fully subnetted».
+    # На этой машине 31 чужая сеть, и обе пулы Docker по умолчанию (172.17–172.31 и
+    # 192.168.0–240/20) разобраны целиком. Это тот же класс, что занятые хостовые порты:
+    # машина не пустая, и адресное пространство — такой же разделяемый ресурс, как порт.
+    # Значение правится под машину переменной, а не редактированием этого файла.
+    ipam:
+      config:
+        - subnet: ${N4_EGRESS_SUBNET:-10.83.0.0/24}
+
+volumes:
+  db-data:
+  storage-data:
+  caddy-data:
+  caddy-config:

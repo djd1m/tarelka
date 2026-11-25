@@ -1,0 +1,755 @@
+[
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#A/1",
+    "variant": "A",
+    "step": 1,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:19.234Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#A/2",
+    "variant": "A",
+    "step": 2,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      },
+      {
+        "name": "кнопка съёмки есть",
+        "ok": true
+      },
+      {
+        "name": "съёмка переводит на шаг 3",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:19.859Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#A/3",
+    "variant": "A",
+    "step": 3,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      },
+      {
+        "name": "чип источника числа",
+        "ok": true
+      },
+      {
+        "name": "share-CTA (FR-GROWTH-001)",
+        "ok": true
+      },
+      {
+        "name": "степпер пересчитывает ккал (540 → 1080)",
+        "ok": true
+      },
+      {
+        "name": "запись базы раскрывается",
+        "ok": true
+      },
+      {
+        "name": "экран расхождения",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:20.558Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#A/4",
+    "variant": "A",
+    "step": 4,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:20.946Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#A/5",
+    "variant": "A",
+    "step": 5,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:21.334Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#A/6",
+    "variant": "A",
+    "step": 6,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:21.711Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#B/1",
+    "variant": "B",
+    "step": 1,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:22.215Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#B/2",
+    "variant": "B",
+    "step": 2,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      },
+      {
+        "name": "кнопка съёмки есть",
+        "ok": true
+      },
+      {
+        "name": "съёмка переводит на шаг 3",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:22.884Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#B/3",
+    "variant": "B",
+    "step": 3,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      },
+      {
+        "name": "чип источника числа",
+        "ok": true
+      },
+      {
+        "name": "share-CTA (FR-GROWTH-001)",
+        "ok": true
+      },
+      {
+        "name": "степпер пересчитывает ккал (540 → 1080)",
+        "ok": true
+      },
+      {
+        "name": "запись базы раскрывается",
+        "ok": true
+      },
+      {
+        "name": "экран расхождения",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:23.537Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#B/4",
+    "variant": "B",
+    "step": 4,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:23.951Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#B/5",
+    "variant": "B",
+    "step": 5,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:24.354Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#B/6",
+    "variant": "B",
+    "step": 6,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:24.726Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#C/1",
+    "variant": "C",
+    "step": 1,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:25.221Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#C/2",
+    "variant": "C",
+    "step": 2,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      },
+      {
+        "name": "кнопка съёмки есть",
+        "ok": true
+      },
+      {
+        "name": "съёмка переводит на шаг 3",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:25.763Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#C/3",
+    "variant": "C",
+    "step": 3,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      },
+      {
+        "name": "чип источника числа",
+        "ok": true
+      },
+      {
+        "name": "share-CTA (FR-GROWTH-001)",
+        "ok": true
+      },
+      {
+        "name": "степпер пересчитывает ккал (540 → 1080)",
+        "ok": true
+      },
+      {
+        "name": "запись базы раскрывается",
+        "ok": true
+      },
+      {
+        "name": "экран расхождения",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:26.454Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#C/4",
+    "variant": "C",
+    "step": 4,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:26.828Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#C/5",
+    "variant": "C",
+    "step": 5,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:27.192Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#C/6",
+    "variant": "C",
+    "step": 6,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:27.580Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#D/1",
+    "variant": "D",
+    "step": 1,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:28.082Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#D/2",
+    "variant": "D",
+    "step": 2,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      },
+      {
+        "name": "кнопка съёмки есть",
+        "ok": true
+      },
+      {
+        "name": "съёмка переводит на шаг 3",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:28.791Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#D/3",
+    "variant": "D",
+    "step": 3,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      },
+      {
+        "name": "чип источника числа",
+        "ok": true
+      },
+      {
+        "name": "share-CTA (FR-GROWTH-001)",
+        "ok": true
+      },
+      {
+        "name": "степпер пересчитывает ккал (540 → 1080)",
+        "ok": true
+      },
+      {
+        "name": "запись базы раскрывается",
+        "ok": true
+      },
+      {
+        "name": "экран расхождения",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:29.522Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#D/4",
+    "variant": "D",
+    "step": 4,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:29.945Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#D/5",
+    "variant": "D",
+    "step": 5,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:30.340Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html#D/6",
+    "variant": "D",
+    "step": 6,
+    "checks": [
+      {
+        "name": "шаг открыт",
+        "ok": true
+      },
+      {
+        "name": "хэш соответствует шагу",
+        "ok": true
+      },
+      {
+        "name": "карта пути заполнена",
+        "ok": true
+      },
+      {
+        "name": "экран телефона не пуст",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:30.727Z"
+  },
+  {
+    "url": "file:///home/dz-projects-2026/2026-AUG-PU-Projects/2026-AUG-PU-Projects/projects/04-calorie-vision-cal-ai/docs/prototypes/cjm/index.html",
+    "variant": "—",
+    "step": 0,
+    "checks": [
+      {
+        "name": "панель «Сравнить» открылась",
+        "ok": true
+      },
+      {
+        "name": "таблица 4 вариантов заполнена",
+        "ok": true
+      },
+      {
+        "name": "текст решения готовится",
+        "ok": true
+      },
+      {
+        "name": "панель «Сравнить» закрылась",
+        "ok": true
+      },
+      {
+        "name": "панель «Собрать свой» открылась",
+        "ok": true
+      },
+      {
+        "name": "шесть выпадающих выборов",
+        "ok": true
+      },
+      {
+        "name": "гибрид попадает в текст решения",
+        "ok": true
+      },
+      {
+        "name": "панель «Собрать свой» закрылась",
+        "ok": true
+      }
+    ],
+    "consoleErrors": [],
+    "at": "2026-09-12T16:48:32.363Z"
+  }
+]

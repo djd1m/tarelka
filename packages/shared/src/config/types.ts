@@ -1,0 +1,75 @@
+// Формы проверенной конфигурации. До проверки конфигурации в системе нет — есть
+// только `process.env`, и ни один модуль, кроме `apps/*/src/env.ts`, его не читает.
+
+/**
+ * Реализация поставщика модели. ЗАКРЫТОЕ множество, живёт в коде (DEC-A-009).
+ * `openrouter` — ТРЕТЬЯ реализация (DEC-A-045/046): те же роли канона (основной вызов,
+ * эскалация), другой носитель. Добавление варианта в это множество НЕ означает включение
+ * на живых пользователях — граница согласия описана у самого адаптера.
+ */
+export const MODEL_PROVIDERS = ['fake', 'live', 'openrouter'] as const;
+export type ModelProvider = (typeof MODEL_PROVIDERS)[number];
+
+/** Три потолка вызовов модели (ADR-007). Ни один не имеет значения по умолчанию. */
+export interface QuotaLimits {
+  /** Личный потолок на пользователя в сутки (канон §7: 10). */
+  readonly scanLimitUser: number;
+  /** Суточный потолок ВСЕХ попыток системы (канон §7: 3000). */
+  readonly scanLimitDay: number;
+  /** Суточный потолок эскалаций к Sonnet 5 (канон §7: 600). */
+  readonly escalationLimitDay: number;
+}
+
+/** Пороги ограничения частоты на один `ip_prefix` (канон §7, DEC-A-013). */
+export interface RateLimits {
+  /** Мутирующие маршруты: 30 запросов в минуту. */
+  readonly mutatePerMinute: number;
+  /** Чтение: 120 запросов в минуту. */
+  readonly readPerMinute: number;
+}
+
+/** Доступ к приватному бакету фото. В этой фиче объекты не кладутся и не читаются. */
+export interface StorageConfig {
+  readonly endpoint: string;
+  readonly bucket: string;
+  readonly accessKey: string;
+  readonly secretKey: string;
+}
+
+/** Подписка и комиссия (фича `subscription-and-commission`, OWN-002/008/011, ADR-014). */
+export interface SubscriptionConfig {
+  /** Цена в КОПЕЙКАХ. Значения по умолчанию нет: цена — то, что списывают с человека. */
+  readonly priceMinor: number;
+  /** Длина оплаченного периода в днях. */
+  readonly periodDays: number;
+  /** Окно возврата до зрелости начисления (ADR-014). */
+  readonly holdDays: number;
+  /** Суточный потолок распознаваний для подписчика (OWN-008). */
+  readonly scanLimitPro: number;
+}
+
+export interface ApiConfig {
+  readonly databaseUrl: string;
+  readonly appOrigin: string;
+  readonly storage: StorageConfig;
+  readonly quota: QuotaLimits;
+  readonly rateLimits: RateLimits;
+  /** Из него производится секрет HMAC для проверки initData (consent-and-telegram-auth). */
+  readonly telegramBotToken: string;
+  readonly subscription: SubscriptionConfig;
+  /** СЫРОЙ срез платёжных переменных. Разобранных значений здесь нет намеренно: их
+   * разбирает и проверяет владелец решения — селектор провайдера, и он же испытан на
+   * отказ. Конфигурация лишь доносит срез, не толкуя его. */
+  readonly payments: Readonly<Record<string, string | undefined>>;
+}
+
+export interface RecognizerConfig {
+  readonly databaseUrl: string;
+  readonly storage: StorageConfig;
+  readonly quota: QuotaLimits;
+  readonly modelProvider: ModelProvider;
+  /** Пусто законно ТОЛЬКО при `modelProvider === 'fake'`; при `live` старт уже отказал. */
+  readonly anthropicApiKey: string | undefined;
+  /** Пусто законно ТОЛЬКО при `modelProvider !== 'openrouter'`; при `openrouter` старт уже отказал. */
+  readonly openrouterApiKey: string | undefined;
+}

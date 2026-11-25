@@ -1,0 +1,170 @@
+{
+  "schema_version": "feature-telemetry-v1",
+  "policy_version": "compact-quality-first-v2",
+  "run_id": "20260912T171708Z-replicate-04-phase1-4-sparc-0c00",
+  "batch_id": null,
+  "project": "projects/04-calorie-vision-cal-ai",
+  "feature": "replicate-phase1-4-sparc-validation-toolkit-finalize",
+  "pipeline": "/replicate Phase 1 (sparc-prd-mini AUTO, pre-filled from Phase 0/0.5 + CJM E) → Phase 2 (requirements-validator; independent pass on Codex Sol high) → Phase 3 (toolkit) → Phase 4 (finalize)",
+  "tier": "L",
+  "risk_flags": [
+    "new external model calls (vision + RAG)",
+    "health-related personal data (152-ФЗ ст.10)",
+    "public unauthenticated endpoints with spend ceilings",
+    "cross-container product"
+  ],
+  "profile": "compact-quality-first-v2, Anthropic mapping: Astra→Fable 5.1 coordinator / Opus 5, Sol→Opus 5, Terra→Sonnet 5, Luna→Haiku 4.5; Codex for verification: Sol high (Phase 2), Astra medium (code QE) — owner 2026-09-12",
+  "profile_overrides": [
+    "Owner: Codex Astra only at effort medium in this project",
+    "Owner: planning + implementation on Claude Code, verification on Codex"
+  ],
+  "comparison_id": null,
+  "baseline_revision": "8b9df335bb49fdde01f7092ee0d47e2c6a7bfa1b",
+  "final_revision": null,
+  "spec_sha256": "eb69591d375fcebcc8574a8ea3c8104efaab992b88c385a2818b634805c5a540",
+  "policy_sha256": "cc958dec9cd12d0a83b0662fdb57d5a3f0874535f36bdf1d1e7b424f4660e1d9",
+  "host": "Claude Code CLI 2.1.261 + Agent subagents + codex exec",
+  "host_version": "2.1.261",
+  "billing_mode": "unknown",
+  "started_at": "2026-09-12T17:17:08Z",
+  "ended_at": null,
+  "status": "running",
+  "inputs": [
+    "docs/product-discovery-brief.md",
+    "docs/source-product-profile.md",
+    "docs/CJM_Variants.md (E)",
+    "docs/discovery/business-model-and-cjm-analysis.md",
+    "docs/discovery/research/*.md"
+  ],
+  "acceptance_evidence": [
+    "docs/Specification.md",
+    "docs/PRD.md",
+    "docs/Pseudocode.md",
+    "docs/Architecture.md",
+    "docs/ADR.md",
+    "docs/C4_Diagrams.md",
+    "docs/Refinement.md",
+    "docs/Completion.md",
+    "docs/Research_Findings.md",
+    "docs/Solution_Strategy.md",
+    "docs/Final_Summary.md",
+    "CLAUDE.md",
+    "docs/model-cost-contract.md",
+    "docs/long-job-contract.md",
+    "docs/webhook-contract.md",
+    "docs/embed-contract.md",
+    "docs/telemetry/p-replicator/20260912T171708Z-replicate-04-phase1-4-sparc-0c00/receipts/*.md",
+    "docs/validation-report.md",
+    "docs/test-scenarios.md"
+  ],
+  "quality": {
+    "required_gates_passed": null,
+    "ac_met": null,
+    "ac_total": null,
+    "confirmed_findings_by_severity": null,
+    "false_positive_findings": null,
+    "known_defects_missed": null,
+    "regressions": null,
+    "followup_status": "pending"
+  },
+  "metrics": {
+    "elapsed_wall_ms": null,
+    "active_wall_ms": null,
+    "usage": {
+      "source": "scripts/telemetry/collect-usage.cjs (transcript aggregation, dedupe by message.id)",
+      "scope": "coordinator session + subagents, window 17:17Z→2026-09-12T19:00:10Z (Phase 1+2)",
+      "evidence": "evidence/usage-phase2.json",
+      "input_tokens_total": 118904678,
+      "cached_input_tokens": 115150379,
+      "cache_creation_input_tokens": 3752055,
+      "output_tokens_total": 607247,
+      "reasoning_tokens": 171295,
+      "requests": 395,
+      "quality": "partial",
+      "by_model": {
+        "claude-fable-5-1": 76,
+        "claude-opus-5": 219,
+        "claude-sonnet-5": 100
+      },
+      "codex_sessions": 1
+    },
+    "cost": {
+      "basis": "list-price equivalent, rates docs/development/telemetry/rates/2026-09-12-anthropic-codex.json",
+      "evidence": "evidence/cost-phase2.json",
+      "usd": 95.63,
+      "by_model_usd": {
+        "claude-fable-5-1": 13.5132,
+        "claude-opus-5": 30.5839,
+        "claude-sonnet-5": 3.4356
+      },
+      "caveat": "subscription session — not an invoice; coordinator cost shared across all units",
+      "credits": null,
+      "by_model": {
+        "claude-fable-5-1": 36.5779,
+        "claude-opus-5": 49.5276,
+        "claude-sonnet-5": 9.5282
+      }
+    }
+  },
+  "telemetry_status": "partial",
+  "missing_data": {
+    "usage": "Host exposes no usage to tools at runtime; counters recovered from host-written transcripts (host attestation of model per response), Codex from session token_count snapshots. actual_model = transcript message.model."
+  },
+  "rates": "docs/development/telemetry/rates/2026-09-12-anthropic-codex.json",
+  "phases": {
+    "phase1": {
+      "status": "completed",
+      "ended_at": "2026-09-12T18:03:45Z",
+      "documents": 11,
+      "gates": "docs-complete 0, growth 0, look 0, handoff 0, metric 0, external-deps 0, model-cost 0, canon 0, ownership 0; webhook/embed 2 (нет), job 2 (not-deployed)",
+      "attempts": {
+        "spec-writer": 1,
+        "arch-writer": 3,
+        "algo-writer": 2,
+        "ops-writer": 1
+      }
+    },
+    "phase2": {
+      "status": "completed",
+      "ended_at": "2026-09-12T19:00:10Z",
+      "verdict": "🟡 CAVEATS",
+      "findings": {
+        "total": 22,
+        "closed": 22,
+        "open": 0
+      },
+      "iterations": "2 fix rounds + 2 one-line rounds",
+      "gates": "check-docs-complete=0 check-growth-trace=0 check-look-trace=0 check-handoff-manifest=0 check-metric-source=0 check-external-deps=0 check-model-cost=0 check-canon=0 check-file-ownership=0 check-job-contract=2",
+      "attempts": {
+        "validator-stories-ac": 1,
+        "validator-docs-coherence": 1,
+        "codex-validator (gpt-5.6-sol high)": 1,
+        "fixer-phase2": 4,
+        "revalidator": 1
+      }
+    },
+    "phase3": {
+      "status": "completed",
+      "ended_at": "2026-09-12T19:28:24Z",
+      "artifacts": "3 agents, 4 rules, 4 skills, roadmap (8), toolkit-map, DEVELOPMENT_GUIDE",
+      "gates": "roadmap JSON 0"
+    },
+    "phase4": {
+      "status": "completed",
+      "ended_at": "2026-09-12T19:28:24Z",
+      "artifacts": "docker-compose.yml (6 services, digests), Dockerfile, .dockerignore, .env.example, .gitignore",
+      "gates": "compose config 0; check-ports 0; port-conflicts 0 (4180 free)",
+      "notes": "web publication removed (bypassed proxy); scripts/check-env-wiring.sh absent in repo"
+    }
+  },
+  "experiment": {
+    "id": "EXP-N4-001",
+    "protocol": "docs/development/telemetry/experiments/2026-09-12-n4-profile-ab.md",
+    "protocol_sha256_prefix": "bf467bf640fe",
+    "arms": {
+      "A": "claude-opus-5",
+      "B": "claude-sonnet-5"
+    },
+    "judge": "gpt-6-astra medium (Codex), blind"
+  }
+}
