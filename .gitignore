@@ -10,3 +10,6 @@ coverage/
 !.env.example
 __pycache__/
 *.pyc
+
+# S3 credentials supplied outside the repository
+s3-from-clipmkr.env
