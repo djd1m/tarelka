@@ -1,0 +1,244 @@
+{
+  "schema": "fa-review-convergence-1",
+  "phase": "qe",
+  "reviewers": [
+    {
+      "id": "qe-primary",
+      "family": "codex"
+    },
+    {
+      "id": "qe-security",
+      "family": "codex"
+    },
+    {
+      "id": "qe-tests",
+      "family": "codex"
+    }
+  ],
+  "snapshot": {
+    "nonce": "6fc78fa2-48a6-4618-bf05-2288cecee330",
+    "revision": "6e03cfd957a551e2310621a6bac7edbf99e937369398510618287f6a848afad7",
+    "manifest": [
+      {
+        "path": ".env.example",
+        "digest": "1b3fe3cf955978d8db5a5b322b37232e032c641c3e1f1ca606ef6ed9b332c0a2"
+      },
+      {
+        "path": "README.md",
+        "digest": "1f485558b476f9bd4614498dbfc7937f966bde3e8054db1e211e67fd3cac76df"
+      },
+      {
+        "path": "apps/api/package.json",
+        "digest": "e5f3d1c4b1b5405efd45d2c97db2aa158a896172ca4b1c83f848e391f6da0dd5"
+      },
+      {
+        "path": "apps/api/src/bootstrap.ts",
+        "digest": "a2035f62a58eae68017cfda81694db78ce5b88b8d5d7f203cf74e9f1f836bd6c"
+      },
+      {
+        "path": "apps/api/src/env.ts",
+        "digest": "0f18f1d41d89bacae1f3cbc586f670814a2d95a75667ba498e46d3b4ba8db13a"
+      },
+      {
+        "path": "apps/api/src/photo/purge-orphans.ts",
+        "digest": "48e4054c744c42610986b222cf7f6c6f93a7c9c2f61c37effdd2e38099a3d0a3"
+      },
+      {
+        "path": "apps/api/src/photo/storage-object-lister.ts",
+        "digest": "2d3702813fbd4de2343acaef53c980187bc8ddf25b40074875aca0ea3db653d1"
+      },
+      {
+        "path": "apps/api/src/photo/store-original.ts",
+        "digest": "b35ad73ce2786dbb7260f1849cdab4cbf0ff4b882ebd67c7c4960e62922ab4ea"
+      },
+      {
+        "path": "apps/api/src/routes/scans-photo.ts",
+        "digest": "f7cabc86fd7fa29965b52c97670cbd7b83022f4cc5f8365d009b8c5bf2bfd7d5"
+      },
+      {
+        "path": "apps/api/src/routes/scans.ts",
+        "digest": "5d2cd7fd5829a13ab767da4863b0febfdd8b4b84cd0f766c2717fa48fa060ed0"
+      },
+      {
+        "path": "apps/api/src/routes/share-card-internal.ts",
+        "digest": "39ccd1eae6c2b823cfd556eecec0160d60533a3c04c89c02fc27c9f3435b136b"
+      },
+      {
+        "path": "apps/api/src/server.ts",
+        "digest": "0975b2ab48579f16a3ca4e8ebeef51c164329cfa795461285b6e3c47870cc6ae"
+      },
+      {
+        "path": "apps/api/src/share/render-card-image.ts",
+        "digest": "c8db3afcef973e7bac649c4f155c2ab384a2d9c0a60993e887e66cceeb78bfe7"
+      },
+      {
+        "path": "apps/recognizer/package.json",
+        "digest": "76651001caea71226611a178faeaa217d615391d52e3727eb8f0cc056d483040"
+      },
+      {
+        "path": "apps/recognizer/src/bootstrap.ts",
+        "digest": "1f2de56d2e316b61a9f193347d99af0a515306c28e37c1f837f222d8d4b75e3c"
+      },
+      {
+        "path": "apps/recognizer/src/consent/erasure-job.ts",
+        "digest": "23aaafda353d1580f21df89f372da5c8ffd8eb560ecd9f9efcb15960e90e0117"
+      },
+      {
+        "path": "apps/recognizer/src/env.ts",
+        "digest": "a559b2d6f24eebb86b66b03ac434d0d662d0d62c29088e51245356d410e45092"
+      },
+      {
+        "path": "apps/recognizer/src/photo/purge-expired.ts",
+        "digest": "c5d15b7a88e727359cc287d6dcd601b33f80b22c31046f3916829210ca1949f5"
+      },
+      {
+        "path": "apps/recognizer/src/photo/storage.ts",
+        "digest": "a020b7c3346154df5d8124344d41b6f279fe8365b6f20fc147c901a5898783ad"
+      },
+      {
+        "path": "apps/recognizer/src/storage/photo-store-minio.ts",
+        "digest": "47bce24456fe67bae74225a20fcdf30be4e9478ce1ff58e8e8ba46ddf4b6fab9"
+      },
+      {
+        "path": "docker-compose.yml",
+        "digest": "7819416e58b199ff25ef668de157aae22b9ff81ea5c01b6d93aa5d1082958bc9"
+      },
+      {
+        "path": "docs/REPRODUCE.md",
+        "digest": "e3116384de7caeaef086da54414b9d6a0c6ebbe2c87dd845735b911a497ecde9"
+      },
+      {
+        "path": "docs/operations/cloudru-s3.md",
+        "digest": "a2d9d2d0bb44ee98356a302e33637b35926b0523232886a78b42df4a9d1b2e0c"
+      },
+      {
+        "path": "features/cloudru-s3/00_complexity_assessment.md",
+        "digest": "3e102a8ae510c2aa9150a0b22fff55838229bc77db69dd60863dc7e3bc4e1d7c"
+      },
+      {
+        "path": "features/cloudru-s3/01_requirements.md",
+        "digest": "3bf6dcc0ba12b4f48c1f6ea6831e113b60917bbc9bd1432a3941861ac233353c"
+      },
+      {
+        "path": "features/cloudru-s3/02_research.md",
+        "digest": "20dc5180d681639e6ddf96c7bb4217e0c12e61b1bca0b3b71dacf4bcc30f6e9b"
+      },
+      {
+        "path": "features/cloudru-s3/03.5_ideation_report.md",
+        "digest": "70f5328662458898e3979fb80150941561c653d2c8fb96fb38b2f76e5381621c"
+      },
+      {
+        "path": "features/cloudru-s3/03_adr/001-use-shared-s3-client.md",
+        "digest": "c175749528b094b96dc64fccc5538a183f01fc811e1471f19d31a836ca617699"
+      },
+      {
+        "path": "features/cloudru-s3/03_adr/002-isolate-local-storage.md",
+        "digest": "7cee3550ce33367ed08a2ccabb79a484099eed7cee9a1e5880c1c10d3faa9913"
+      },
+      {
+        "path": "features/cloudru-s3/04_domain_model.md",
+        "digest": "f832759f991990c3009ada1d376b6d362d90a85e508bd3f87680e5ff3314d227"
+      },
+      {
+        "path": "features/cloudru-s3/05_architecture.md",
+        "digest": "e4313ce5c377ff40784c22e4b77fcb81520ebc95911a52d5e30e033307fce63e"
+      },
+      {
+        "path": "features/cloudru-s3/06_implementation_plan.md",
+        "digest": "b6930f8e146e0261e144c82b3f684460715c4cd6c3dff77ca3b7cb1c109bd872"
+      },
+      {
+        "path": "openspec/changes/cloudru-s3/design.md",
+        "digest": "25cc8cd1c820803e7e3be06da2117336c2cb21ee610dc276fb9970b4c4e35156"
+      },
+      {
+        "path": "openspec/changes/cloudru-s3/proposal.md",
+        "digest": "882700a5f50e313764a9753346b95ec8131417f7da2dede85f2c558227a819af"
+      },
+      {
+        "path": "openspec/changes/cloudru-s3/specs/photo-object-storage/spec.md",
+        "digest": "bc18ab2aa7c56d19f6c6ea8ee8f261cebdd944d3ec6b7c3ee41dbb8cdb90a391"
+      },
+      {
+        "path": "openspec/changes/cloudru-s3/tasks.md",
+        "digest": "8f1eb6f11f4f3e08f488ef928c842d65c72eb36caa0117b764ac07638915f058"
+      },
+      {
+        "path": "openspec/config.yaml",
+        "digest": "c73c581023b5bb07eabddd91b64b8cf33e2030d80d479bc736ccdb9873cb1a92"
+      },
+      {
+        "path": "package-lock.json",
+        "digest": "0a9d03e1ad568184a6beeefb325252778fc9b4abe56c53c06af06a6e7da6a3df"
+      },
+      {
+        "path": "package.json",
+        "digest": "36d6c04afa44783980c0637ffcef1a9d718c27b1209aee4349230188550d4f5f"
+      },
+      {
+        "path": "packages/db/src/pool.ts",
+        "digest": "73fb924c08e390a52695d06f5b1290ad856d4ebdcb27ae11f20c6bd20b01d64d"
+      },
+      {
+        "path": "packages/shared/package.json",
+        "digest": "425bb57f0fee56598aeae5d5dc8fc334d3fe3726fc820978d9e7b29407799fe2"
+      },
+      {
+        "path": "packages/shared/src/config/env.ts",
+        "digest": "94609066d8d98cd608c567979b166f857e5e2c8393ae97480a1c6dd20d39cd62"
+      },
+      {
+        "path": "packages/shared/src/config/types.ts",
+        "digest": "6fecdbc58beb216353d3ab97ae43335ae8932574354241da34289e364ed11388"
+      },
+      {
+        "path": "packages/shared/src/index.ts",
+        "digest": "8b07e9f6d992faaecd4e313bb40144257c53de1bf96a767f9d9c1f9015ef2ca3"
+      },
+      {
+        "path": "packages/shared/src/storage/photo-s3-client.ts",
+        "digest": "482a73b50538093453a24b1e29722ca6e17df3a7defdae3f9c98a00f37915151"
+      },
+      {
+        "path": "tests/helpers/config.ts",
+        "digest": "789167d4251e3a059505180af8af1e9bdd1645f26e0a4316143b005453d74314"
+      },
+      {
+        "path": "tests/helpers/minio.ts",
+        "digest": "34f678670de19047c65d84aec59886c057dfca8a1519b76cde0df63153d3fb7d"
+      },
+      {
+        "path": "tests/helpers/scan-config.ts",
+        "digest": "3bb57b3e2b57b77273582351e68ece359948c62ab4ef4338f073add4dc789847"
+      },
+      {
+        "path": "tests/integration/check-env-wiring.test.ts",
+        "digest": "dbb5c4f89e0cd3e24a11e8db0bd60fbdc1afd23884355e11dc7b27f12f9fcc1b"
+      },
+      {
+        "path": "tests/integration/provider-adapter.test.ts",
+        "digest": "e1ea196bf7b1333a1eb549346d4cf3f3a50fb42e25ee5b19f824fb5ad0f2d14e"
+      },
+      {
+        "path": "tests/unit/config.test.ts",
+        "digest": "a507d559a7caf9fd115a4a2d77ec5adaa6438c53a41ef4cea2216b07c22e6acd"
+      },
+      {
+        "path": "tests/unit/s3-compose.test.ts",
+        "digest": "b2429c1865a7c95d7af5f87e2f6f25d00a048239bd10c1dbb52f2ab5b737f859"
+      },
+      {
+        "path": "tests/unit/s3-storage.test.ts",
+        "digest": "9b41a29a832b96a83363d33df6ea79544638c4afee4f37997ab76e5554d49a01"
+      },
+      {
+        "path": "tests/unit/scans-cleanup.test.ts",
+        "digest": "372e3a2c8dbb176da8dc92fcca628aa698431dca80d81049b84b9a5f37899981"
+      }
+    ]
+  },
+  "conditions": [],
+  "reviewSeen": true,
+  "rework": true,
+  "changedPaths": []
+}

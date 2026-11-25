@@ -1,0 +1,9 @@
+schema: spec-driven
+
+context: |
+  Тарелка — npm workspaces, Node 22, TypeScript, Fastify API, recognizer worker,
+  Next.js web, PostgreSQL 16. Фото хранятся в приватном S3-совместимом бакете.
+  Решения и проверки фич ведутся через feature-adr в features/<slug>/.
+  Исходные требования проекта находятся в docs/canon.md и docs/Specification.md.
+  Изменение cloudru-s3 опирается на реализацию Cloud.ru в djd1m/clipmkr.
+  Документы изменений ведутся по-русски.

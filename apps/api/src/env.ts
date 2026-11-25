@@ -16,6 +16,8 @@ import {
   requireOrigin,
   requirePositiveInt,
   requireText,
+  requireS3Endpoint,
+  requireBoolean,
   type ApiConfig,
 } from '@n4/shared';
 import { isValidTelegramBotTokenFormat } from './auth/token-format.js';
@@ -37,9 +39,15 @@ export function loadApiConfig(env: EnvSource = process.env): ApiConfig {
       '',
     ),
     storage: {
+      region: attempt(fail, () => {
+        const region = requireText('S3_REGION', env.S3_REGION, 'регион бакета нужен для подписи S3');
+        if (!/^[a-z0-9][a-z0-9-]*$/.test(region)) throw new ConfigError('S3_REGION', 'invalid', 'регион S3 содержит недопустимые символы');
+        return region;
+      }, ''),
+      forcePathStyle: attempt(fail, () => requireBoolean('S3_FORCE_PATH_STYLE', env.S3_FORCE_PATH_STYLE, 'способ адресации бакета должен быть задан явно'), true),
       endpoint: attempt(
         fail,
-        () => requireText('S3_ENDPOINT', env.S3_ENDPOINT, 'без адреса бакета фото пользователя некуда положить'),
+        () => requireS3Endpoint(env.S3_ENDPOINT),
         '',
       ),
       bucket: attempt(
@@ -164,6 +172,8 @@ export function loadApiConfig(env: EnvSource = process.env): ApiConfig {
 export const API_REQUIRED_VARIABLES: readonly string[] = [
   'DATABASE_URL',
   'APP_ORIGIN',
+  'S3_REGION',
+  'S3_FORCE_PATH_STYLE',
   'S3_ENDPOINT',
   'S3_BUCKET',
   'S3_ACCESS_KEY',

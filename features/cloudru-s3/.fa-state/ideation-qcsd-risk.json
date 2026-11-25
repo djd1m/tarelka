@@ -1,0 +1,68 @@
+{
+  "schema": "fa-review-convergence-1",
+  "phase": "ideation",
+  "nonce": "fcb1212d-8918-46bc-b11b-93a92f7d9861",
+  "revision": "62b4f7fd2744fcaf1699de26f8eed81f7d30acad75ea601c318c92b65d190e2d",
+  "author": {
+    "addressed": [
+      "QCS-Q-001",
+      "RISK-001"
+    ],
+    "changedScope": [
+      "features/cloudru-s3/03_adr/001-use-shared-s3-client.md",
+      "features/cloudru-s3/03_adr/002-isolate-local-storage.md",
+      "features/cloudru-s3/05_architecture.md"
+    ],
+    "classification": "structural",
+    "delta": "ADR-001/002 и архитектура теперь требуют обработки ошибок трёх ветвей rollback cleanup и GetBucketVersioning перед каждым DELETE без кэша. Указаны тестовые файлы, runtime-права и unversioned bucket.",
+    "evidence": "Текущие Decision/Confirmation в ADR-001/002, секция Ошибки и повторы архитектуры.",
+    "newRisks": {
+      "assessment": "Новая зависимость удаления от GetBucketVersioning требует отдельного IAM-права.",
+      "evidence": "ADR-002 и архитектура требуют право и явный отказ при недоступной проверке.",
+      "conditions": []
+    }
+  },
+  "reviews": [
+    {
+      "reviewer": "qcsd-risk",
+      "family": "codex",
+      "independent": true,
+      "verdict": "clean",
+      "conditions": [
+        {
+          "id": "RISK-001",
+          "owner": "qcsd-risk",
+          "severity": "HIGH",
+          "classification": "structural",
+          "requirement": "Before destructive storage operations can report success, verify that the target bucket has never-enabled versioning (GetBucketVersioning Status absent). Reject Enabled and Suspended and propagate inability to read versioning status. Apply the same guard to expiry cleanup, account erasure, orphan cleanup, and API rollback deletion. Add named automated checks for versioned/suspended/forbidden status and unversioned successful deletion, and document the required GetBucketVersioning permission and unversioned target bucket.",
+          "scope": [
+            "features/cloudru-s3/03_adr/001-use-shared-s3-client.md",
+            "features/cloudru-s3/03_adr/002-isolate-local-storage.md",
+            "features/cloudru-s3/05_architecture.md"
+          ],
+          "evidence": "ADR-001 Decision sends DeleteObject and treats success as physical deletion. Architecture commits purged after successful DELETE. apps/recognizer/src/consent/erasure-job.ts:152-156 and apps/recognizer/src/photo/purge-expired.ts:42-44 commit file state based on adapter success. Source reference /home/clipmkr/packages/s3/src/erasure.ts:19-20 explicitly rejects any GetBucketVersioning Status because delete markers conceal retained versions. No equivalent check appears in the proposed design."
+        }
+      ],
+      "verifications": [
+        {
+          "id": "RISK-001",
+          "revision": "62b4f7fd2744fcaf1699de26f8eed81f7d30acad75ea601c318c92b65d190e2d",
+          "classification": "structural",
+          "evidence": "Independently re-read ADR-001 Decision and Confirmation, ADR-002 Decision, and architecture sections Errors/retries and Deployment at snapshot 62b4f7fd2744fcaf1699de26f8eed81f7d30acad75ea601c318c92b65d190e2d. Design now routes every deletion through deletePhotoS3Object, checks GetBucketVersioning before each DELETE without cache, refuses Enabled/Suspended and failed status reads, preserves purged/erased state on failure, names HTTP tests for all three refusals and repeat success, and documents never-enabled bucket plus GetBucketVersioning runtime permission. This verifies design artifacts only; implementation and tests remain future QE work.",
+          "implementationVerified": true
+        }
+      ],
+      "newRisks": {
+        "assessment": "No additional serious risks identified after focused review of RISK-001 and the complete three-file design delta.",
+        "evidence": "Checked every original condition obligation against current ADR-001/002 and architecture, including delete guard coverage, no status cache, failure propagation, test scenarios, IAM permission, bucket prerequisite, and caller rollback error handling.",
+        "conditions": []
+      },
+      "authorAssessmentChecked": true,
+      "deltaVerification": {
+        "classification": "structural",
+        "evidence": "Author changedScope exactly matches the three host-measured changed paths. Structural classification is appropriate because the new pre-delete check and rollback error handling alter behavior and acceptance. Reviewed all changed ADR/architecture sections, including quality finding rollback 202/429/503 handling. Additional GetBucketVersioning dependency is explicitly recorded and fails closed; no additional serious risk identified in the settled design.",
+        "implementationVerified": true
+      }
+    }
+  ]
+}

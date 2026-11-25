@@ -23,6 +23,8 @@ import { loadRecognizerConfig } from '../../apps/recognizer/src/env.js';
 const BASE_ENV: Record<string, string | undefined> = {
   DATABASE_URL: 'postgresql://n4_app:secret@db:5432/n4',
   S3_ENDPOINT: 'http://storage:9000',
+  S3_REGION: 'us-east-1',
+  S3_FORCE_PATH_STYLE: 'true',
   S3_BUCKET: 'n4-photos',
   S3_ACCESS_KEY: 'access-key-value',
   S3_SECRET_KEY: 'secret-key-value',
@@ -47,7 +49,7 @@ function request(overrides: Partial<ModelImage & ModelCallOptions> = {}) {
 
 const LIVE_CONFIG = {
   databaseUrl: 'x',
-  storage: { endpoint: 'x', bucket: 'x', accessKey: 'x', secretKey: 'x' },
+  storage: { region: 'us-east-1', forcePathStyle: true, endpoint: 'x', bucket: 'x', accessKey: 'x', secretKey: 'x' },
   quota: { scanLimitUser: 10, scanLimitDay: 3000, escalationLimitDay: 600 },
   modelProvider: 'live' as const,
   // Поле обязательно с ТРЕТЬЕЙ реализацией (DEC-A-045/046); пусто законно при `live`.
@@ -59,7 +61,7 @@ const STUB_IMAGES: ImageFetcher = { fetchBase64: () => Promise.reject(new Error(
 
 const OPENROUTER_CONFIG = {
   databaseUrl: 'x',
-  storage: { endpoint: 'x', bucket: 'x', accessKey: 'x', secretKey: 'x' },
+  storage: { region: 'us-east-1', forcePathStyle: true, endpoint: 'x', bucket: 'x', accessKey: 'x', secretKey: 'x' },
   quota: { scanLimitUser: 10, scanLimitDay: 3000, escalationLimitDay: 600 },
   modelProvider: 'openrouter' as const,
   anthropicApiKey: undefined,

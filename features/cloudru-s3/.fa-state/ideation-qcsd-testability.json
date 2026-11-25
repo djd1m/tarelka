@@ -1,0 +1,46 @@
+{
+  "schema": "fa-review-convergence-1",
+  "phase": "ideation",
+  "nonce": "fcb1212d-8918-46bc-b11b-93a92f7d9861",
+  "revision": "62b4f7fd2744fcaf1699de26f8eed81f7d30acad75ea601c318c92b65d190e2d",
+  "author": {
+    "addressed": [
+      "QCS-Q-001",
+      "RISK-001"
+    ],
+    "changedScope": [
+      "features/cloudru-s3/03_adr/001-use-shared-s3-client.md",
+      "features/cloudru-s3/03_adr/002-isolate-local-storage.md",
+      "features/cloudru-s3/05_architecture.md"
+    ],
+    "classification": "structural",
+    "delta": "ADR-001/002 и архитектура теперь требуют обработки ошибок трёх ветвей rollback cleanup и GetBucketVersioning перед каждым DELETE без кэша. Указаны тестовые файлы, runtime-права и unversioned bucket.",
+    "evidence": "Текущие Decision/Confirmation в ADR-001/002, секция Ошибки и повторы архитектуры.",
+    "newRisks": {
+      "assessment": "Новая зависимость удаления от GetBucketVersioning требует отдельного IAM-права.",
+      "evidence": "ADR-002 и архитектура требуют право и явный отказ при недоступной проверке.",
+      "conditions": []
+    }
+  },
+  "reviews": [
+    {
+      "reviewer": "qcsd-testability",
+      "family": "codex",
+      "independent": true,
+      "verdict": "clean",
+      "conditions": [],
+      "verifications": [],
+      "newRisks": {
+        "assessment": "The added GetBucketVersioning dependency is explicit and testable; inability to read its status refuses deletion and retains retry paths. No additional blocking testability risk identified in the focused delta.",
+        "evidence": "Author handoff inspected against all three host changedPaths and original production callers. Both findings remain owned by their originating reviewers. The new acceptance includes provider refusal, Suspended as well as Enabled, absent status success, per-delete recheck and route responses under cleanup failure.",
+        "conditions": []
+      },
+      "authorAssessmentChecked": true,
+      "deltaVerification": {
+        "classification": "structural",
+        "evidence": "Independently re-read ADR-001/002 and architecture at revision 62b4f7fd2744fcaf1699de26f8eed81f7d30acad75ea601c318c92b65d190e2d. Verified both changed contracts have explicit refusal/compatibility behavior and named Confirmation files: tests/unit/scans-cleanup.test.ts for preserved 202 replay, 429 quota and 503 DB responses under rollback DELETE errors; tests/unit/s3-storage.test.ts for Enabled, Suspended and GetBucketVersioning failures plus unversioned/repeated deletion. Existing POST /scans branches at apps/api/src/routes/scans.ts currently await removal at lines 231/235/242, validating that caller regression tests are necessary. Common deletePhotoS3Object is specified for all DELETE calls with no state cache. Operator IAM and bucket constraints are recorded in ADR-002. Author changedScope matches host changedPaths. This verifies the corrected ideation artifacts and testability of acceptance, not implementation execution.",
+        "implementationVerified": true
+      }
+    }
+  ]
+}

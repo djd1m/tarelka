@@ -1,0 +1,2241 @@
+{
+  "plan": {
+    "runnable": true,
+    "verdict": "PENDING",
+    "measurementValid": false,
+    "primaryAction": "none",
+    "baseRef": "HEAD",
+    "baseRefResolution": {
+      "requestedRef": "HEAD",
+      "resolvedRef": "HEAD",
+      "how": "explicit-ref"
+    },
+    "runnerSelection": {
+      "kind": "vitest",
+      "command": "npx vitest run",
+      "runnerName": "vitest",
+      "how": "scripts.test"
+    },
+    "packageDir": ".",
+    "targets": [
+      {
+        "file": "tests/unit/scans-cleanup.test.ts"
+      },
+      {
+        "file": "tests/unit/s3-storage.test.ts"
+      }
+    ],
+    "rejected": [],
+    "commands": [
+      "git worktree add --detach {{WORKTREE}} HEAD",
+      "( cd \"{{WORKTREE}}\" && npx vitest run 'tests/unit/scans-cleanup.test.ts' 'tests/unit/s3-storage.test.ts' )",
+      "git worktree remove --force {{WORKTREE}}"
+    ],
+    "isolation": {
+      "materialization": "full-revision-tree",
+      "revision": "HEAD",
+      "overlays": []
+    }
+  },
+  "results": [
+    {
+      "file": "tests/unit/scans-cleanup.test.ts",
+      "outcome": "fail",
+      "evidence": {
+        "exitCode": 1,
+        "runner": "unrecognised",
+        "failureKind": "unrecognised",
+        "testsExecuted": null,
+        "testsRun": null,
+        "targetSeen": false,
+        "evidenceLine": "output matches neither node --test (TAP + # duration_ms) nor vitest (RUN v / Test Files) — no classifier for this runner; structural-vs-behavioural redness cannot be told apart, so the verdict may not be PROVEN"
+      },
+      "baseRun": {
+        "command": "npx vitest run 'tests/unit/scans-cleanup.test.ts'",
+        "cwd": "/tmp/dz-disc-unIJ62/wt",
+        "stdout": "",
+        "stderr": "failed to load config from /tmp/dz-disc-unIJ62/wt/vitest.config.ts\n\n⎯⎯⎯⎯⎯⎯⎯ Startup Error ⎯⎯⎯⎯⎯⎯⎯⎯\nError [ERR_MODULE_NOT_FOUND]: Cannot find package 'vitest' imported from /tmp/dz-disc-unIJ62/wt/node_modules/.vite-temp/vitest.config.ts.timestamp-1795623396218-61ac822a69d61.mjs\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:314:9)\n    at packageResolve (node:internal/modules/esm/resolve:772:81)\n    at moduleResolve (node:internal/modules/esm/resolve:859:18)\n    at defaultResolve (node:internal/modules/esm/resolve:989:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:747:20)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:724:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:320:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:182:49) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\n\n\n",
+        "exitCode": 1,
+        "signal": null,
+        "captureComplete": true,
+        "captureError": null
+      },
+      "baselineDependency": {
+        "kind": "unavailable",
+        "specifier": "vitest",
+        "path": null,
+        "detail": "Baseline dependency resolution is bare, outside the baseline, or unbound to a contained importer. Restore the required installed dependency or prepare genuine baseline build artifacts separately; do not borrow tip dist. Then rerun discrimination-check."
+      },
+      "tipOutcome": "pass",
+      "tipEvidence": {
+        "exitCode": 0,
+        "runner": "vitest",
+        "failureKind": "none",
+        "testsExecuted": 1,
+        "testsRun": 1,
+        "targetSeen": true
+      },
+      "tipRun": {
+        "command": "npx vitest run 'tests/unit/scans-cleanup.test.ts'",
+        "cwd": "/home/tarelka",
+        "stdout": "\n RUN  v3.2.7 /home/tarelka\n\n ✓ tests/unit/scans-cleanup.test.ts (1 test) 136ms\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  16:16:37\n   Duration  767ms (transform 182ms, setup 0ms, collect 418ms, tests 136ms, environment 0ms, prepare 50ms)\n\n",
+        "stderr": "",
+        "exitCode": 0,
+        "signal": null,
+        "captureComplete": true,
+        "captureError": null
+      }
+    },
+    {
+      "file": "tests/unit/s3-storage.test.ts",
+      "outcome": "fail",
+      "evidence": {
+        "exitCode": 1,
+        "runner": "unrecognised",
+        "failureKind": "unrecognised",
+        "testsExecuted": null,
+        "testsRun": null,
+        "targetSeen": false,
+        "evidenceLine": "output matches neither node --test (TAP + # duration_ms) nor vitest (RUN v / Test Files) — no classifier for this runner; structural-vs-behavioural redness cannot be told apart, so the verdict may not be PROVEN"
+      },
+      "baseRun": {
+        "command": "npx vitest run 'tests/unit/s3-storage.test.ts'",
+        "cwd": "/tmp/dz-disc-unIJ62/wt",
+        "stdout": "",
+        "stderr": "failed to load config from /tmp/dz-disc-unIJ62/wt/vitest.config.ts\n\n⎯⎯⎯⎯⎯⎯⎯ Startup Error ⎯⎯⎯⎯⎯⎯⎯⎯\nError [ERR_MODULE_NOT_FOUND]: Cannot find package 'vitest' imported from /tmp/dz-disc-unIJ62/wt/node_modules/.vite-temp/vitest.config.ts.timestamp-1795623398866-77e0a30d95058.mjs\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:314:9)\n    at packageResolve (node:internal/modules/esm/resolve:772:81)\n    at moduleResolve (node:internal/modules/esm/resolve:859:18)\n    at defaultResolve (node:internal/modules/esm/resolve:989:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:747:20)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:724:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:320:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:182:49) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\n\n\n",
+        "exitCode": 1,
+        "signal": null,
+        "captureComplete": true,
+        "captureError": null
+      },
+      "baselineDependency": {
+        "kind": "unavailable",
+        "specifier": "vitest",
+        "path": null,
+        "detail": "Baseline dependency resolution is bare, outside the baseline, or unbound to a contained importer. Restore the required installed dependency or prepare genuine baseline build artifacts separately; do not borrow tip dist. Then rerun discrimination-check."
+      },
+      "tipOutcome": "pass",
+      "tipEvidence": {
+        "exitCode": 0,
+        "runner": "vitest",
+        "failureKind": "none",
+        "testsExecuted": 11,
+        "testsRun": 11,
+        "targetSeen": true
+      },
+      "tipRun": {
+        "command": "npx vitest run 'tests/unit/s3-storage.test.ts'",
+        "cwd": "/home/tarelka",
+        "stdout": "\n RUN  v3.2.7 /home/tarelka\n\n ✓ tests/unit/s3-storage.test.ts (11 tests) 233ms\n\n Test Files  1 passed (1)\n      Tests  11 passed (11)\n   Start at  16:16:39\n   Duration  717ms (transform 143ms, setup 0ms, collect 264ms, tests 233ms, environment 0ms, prepare 51ms)\n\n",
+        "stderr": "",
+        "exitCode": 0,
+        "signal": null,
+        "captureComplete": true,
+        "captureError": null
+      }
+    }
+  ],
+  "tipTree": {
+    "headSha": "f8405944913c1cab0d306fedb14620da22461ef3",
+    "dirtyFiles": 33
+  },
+  "dependencyPreparation": {
+    "externalReused": [
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/@img/sharp-libvips-linux-x64",
+        "target": "/home/tarelka/apps/api/node_modules/@img/sharp-libvips-linux-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/@img/sharp-libvips-linuxmusl-x64",
+        "target": "/home/tarelka/apps/api/node_modules/@img/sharp-libvips-linuxmusl-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/@img/sharp-linux-x64",
+        "target": "/home/tarelka/apps/api/node_modules/@img/sharp-linux-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/@img/sharp-linuxmusl-x64",
+        "target": "/home/tarelka/apps/api/node_modules/@img/sharp-linuxmusl-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/semver",
+        "target": "/home/tarelka/apps/api/node_modules/semver"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/sharp",
+        "target": "/home/tarelka/apps/api/node_modules/sharp"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/.bin/semver",
+        "target": "/home/tarelka/apps/api/node_modules/semver/bin/semver.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/@img/sharp-libvips-linux-x64",
+        "target": "/home/tarelka/apps/recognizer/node_modules/@img/sharp-libvips-linux-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/@img/sharp-libvips-linuxmusl-x64",
+        "target": "/home/tarelka/apps/recognizer/node_modules/@img/sharp-libvips-linuxmusl-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/@img/sharp-linux-x64",
+        "target": "/home/tarelka/apps/recognizer/node_modules/@img/sharp-linux-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/@img/sharp-linuxmusl-x64",
+        "target": "/home/tarelka/apps/recognizer/node_modules/@img/sharp-linuxmusl-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/semver",
+        "target": "/home/tarelka/apps/recognizer/node_modules/semver"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/sharp",
+        "target": "/home/tarelka/apps/recognizer/node_modules/sharp"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/.bin/semver",
+        "target": "/home/tarelka/apps/recognizer/node_modules/semver/bin/semver.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@anthropic-ai/sdk",
+        "target": "/home/tarelka/node_modules/@anthropic-ai/sdk"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws/lambda-invoke-store",
+        "target": "/home/tarelka/node_modules/@aws/lambda-invoke-store"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/checksums",
+        "target": "/home/tarelka/node_modules/@aws-sdk/checksums"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/client-s3",
+        "target": "/home/tarelka/node_modules/@aws-sdk/client-s3"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/core",
+        "target": "/home/tarelka/node_modules/@aws-sdk/core"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/credential-provider-env",
+        "target": "/home/tarelka/node_modules/@aws-sdk/credential-provider-env"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/credential-provider-http",
+        "target": "/home/tarelka/node_modules/@aws-sdk/credential-provider-http"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/credential-provider-ini",
+        "target": "/home/tarelka/node_modules/@aws-sdk/credential-provider-ini"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/credential-provider-login",
+        "target": "/home/tarelka/node_modules/@aws-sdk/credential-provider-login"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/credential-provider-node",
+        "target": "/home/tarelka/node_modules/@aws-sdk/credential-provider-node"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/credential-provider-process",
+        "target": "/home/tarelka/node_modules/@aws-sdk/credential-provider-process"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/credential-provider-sso",
+        "target": "/home/tarelka/node_modules/@aws-sdk/credential-provider-sso"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/credential-provider-web-identity",
+        "target": "/home/tarelka/node_modules/@aws-sdk/credential-provider-web-identity"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/middleware-sdk-s3",
+        "target": "/home/tarelka/node_modules/@aws-sdk/middleware-sdk-s3"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/nested-clients",
+        "target": "/home/tarelka/node_modules/@aws-sdk/nested-clients"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/s3-request-presigner",
+        "target": "/home/tarelka/node_modules/@aws-sdk/s3-request-presigner"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/signature-v4-multi-region",
+        "target": "/home/tarelka/node_modules/@aws-sdk/signature-v4-multi-region"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/token-providers",
+        "target": "/home/tarelka/node_modules/@aws-sdk/token-providers"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/types",
+        "target": "/home/tarelka/node_modules/@aws-sdk/types"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@aws-sdk/xml-builder",
+        "target": "/home/tarelka/node_modules/@aws-sdk/xml-builder"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/code-frame",
+        "target": "/home/tarelka/node_modules/@babel/code-frame"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/compat-data",
+        "target": "/home/tarelka/node_modules/@babel/compat-data"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/core",
+        "target": "/home/tarelka/node_modules/@babel/core"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/generator",
+        "target": "/home/tarelka/node_modules/@babel/generator"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/helper-compilation-targets",
+        "target": "/home/tarelka/node_modules/@babel/helper-compilation-targets"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/helper-globals",
+        "target": "/home/tarelka/node_modules/@babel/helper-globals"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/helper-module-imports",
+        "target": "/home/tarelka/node_modules/@babel/helper-module-imports"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/helper-module-transforms",
+        "target": "/home/tarelka/node_modules/@babel/helper-module-transforms"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/helper-plugin-utils",
+        "target": "/home/tarelka/node_modules/@babel/helper-plugin-utils"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/helper-string-parser",
+        "target": "/home/tarelka/node_modules/@babel/helper-string-parser"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/helper-validator-identifier",
+        "target": "/home/tarelka/node_modules/@babel/helper-validator-identifier"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/helper-validator-option",
+        "target": "/home/tarelka/node_modules/@babel/helper-validator-option"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/helpers",
+        "target": "/home/tarelka/node_modules/@babel/helpers"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/parser",
+        "target": "/home/tarelka/node_modules/@babel/parser"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/plugin-transform-react-jsx-self",
+        "target": "/home/tarelka/node_modules/@babel/plugin-transform-react-jsx-self"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/plugin-transform-react-jsx-source",
+        "target": "/home/tarelka/node_modules/@babel/plugin-transform-react-jsx-source"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/runtime",
+        "target": "/home/tarelka/node_modules/@babel/runtime"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/template",
+        "target": "/home/tarelka/node_modules/@babel/template"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/traverse",
+        "target": "/home/tarelka/node_modules/@babel/traverse"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@babel/types",
+        "target": "/home/tarelka/node_modules/@babel/types"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@emnapi/runtime",
+        "target": "/home/tarelka/node_modules/@emnapi/runtime"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@esbuild/linux-x64",
+        "target": "/home/tarelka/node_modules/@esbuild/linux-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@eslint/config-array",
+        "target": "/home/tarelka/node_modules/@eslint/config-array"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@eslint/config-helpers",
+        "target": "/home/tarelka/node_modules/@eslint/config-helpers"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@eslint/core",
+        "target": "/home/tarelka/node_modules/@eslint/core"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@eslint/eslintrc",
+        "target": "/home/tarelka/node_modules/@eslint/eslintrc"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@eslint/js",
+        "target": "/home/tarelka/node_modules/@eslint/js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@eslint/object-schema",
+        "target": "/home/tarelka/node_modules/@eslint/object-schema"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@eslint/plugin-kit",
+        "target": "/home/tarelka/node_modules/@eslint/plugin-kit"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@eslint-community/eslint-utils",
+        "target": "/home/tarelka/node_modules/@eslint-community/eslint-utils"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@eslint-community/regexpp",
+        "target": "/home/tarelka/node_modules/@eslint-community/regexpp"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/ajv-compiler",
+        "target": "/home/tarelka/node_modules/@fastify/ajv-compiler"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/busboy",
+        "target": "/home/tarelka/node_modules/@fastify/busboy"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/cookie",
+        "target": "/home/tarelka/node_modules/@fastify/cookie"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/deepmerge",
+        "target": "/home/tarelka/node_modules/@fastify/deepmerge"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/error",
+        "target": "/home/tarelka/node_modules/@fastify/error"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/fast-json-stringify-compiler",
+        "target": "/home/tarelka/node_modules/@fastify/fast-json-stringify-compiler"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/forwarded",
+        "target": "/home/tarelka/node_modules/@fastify/forwarded"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/merge-json-schemas",
+        "target": "/home/tarelka/node_modules/@fastify/merge-json-schemas"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/multipart",
+        "target": "/home/tarelka/node_modules/@fastify/multipart"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@fastify/proxy-addr",
+        "target": "/home/tarelka/node_modules/@fastify/proxy-addr"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@humanfs/core",
+        "target": "/home/tarelka/node_modules/@humanfs/core"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@humanfs/node",
+        "target": "/home/tarelka/node_modules/@humanfs/node"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@humanfs/types",
+        "target": "/home/tarelka/node_modules/@humanfs/types"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@humanwhocodes/module-importer",
+        "target": "/home/tarelka/node_modules/@humanwhocodes/module-importer"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@humanwhocodes/retry",
+        "target": "/home/tarelka/node_modules/@humanwhocodes/retry"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@img/colour",
+        "target": "/home/tarelka/node_modules/@img/colour"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@img/sharp-libvips-linux-x64",
+        "target": "/home/tarelka/node_modules/@img/sharp-libvips-linux-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@img/sharp-libvips-linuxmusl-x64",
+        "target": "/home/tarelka/node_modules/@img/sharp-libvips-linuxmusl-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@img/sharp-linux-x64",
+        "target": "/home/tarelka/node_modules/@img/sharp-linux-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@img/sharp-linuxmusl-x64",
+        "target": "/home/tarelka/node_modules/@img/sharp-linuxmusl-x64"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@img/sharp-wasm32",
+        "target": "/home/tarelka/node_modules/@img/sharp-wasm32"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@jridgewell/gen-mapping",
+        "target": "/home/tarelka/node_modules/@jridgewell/gen-mapping"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@jridgewell/remapping",
+        "target": "/home/tarelka/node_modules/@jridgewell/remapping"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@jridgewell/resolve-uri",
+        "target": "/home/tarelka/node_modules/@jridgewell/resolve-uri"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@jridgewell/sourcemap-codec",
+        "target": "/home/tarelka/node_modules/@jridgewell/sourcemap-codec"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@jridgewell/trace-mapping",
+        "target": "/home/tarelka/node_modules/@jridgewell/trace-mapping"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@napi-rs/lzma-linux-x64-gnu",
+        "target": "/home/tarelka/node_modules/@napi-rs/lzma-linux-x64-gnu"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@next/env",
+        "target": "/home/tarelka/node_modules/@next/env"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@next/swc-linux-x64-gnu",
+        "target": "/home/tarelka/node_modules/@next/swc-linux-x64-gnu"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@next/swc-linux-x64-musl",
+        "target": "/home/tarelka/node_modules/@next/swc-linux-x64-musl"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@pinojs/redact",
+        "target": "/home/tarelka/node_modules/@pinojs/redact"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@rolldown/pluginutils",
+        "target": "/home/tarelka/node_modules/@rolldown/pluginutils"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@rollup/rollup-linux-x64-gnu",
+        "target": "/home/tarelka/node_modules/@rollup/rollup-linux-x64-gnu"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@rollup/rollup-linux-x64-musl",
+        "target": "/home/tarelka/node_modules/@rollup/rollup-linux-x64-musl"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@smithy/core",
+        "target": "/home/tarelka/node_modules/@smithy/core"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@smithy/credential-provider-imds",
+        "target": "/home/tarelka/node_modules/@smithy/credential-provider-imds"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@smithy/fetch-http-handler",
+        "target": "/home/tarelka/node_modules/@smithy/fetch-http-handler"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@smithy/node-http-handler",
+        "target": "/home/tarelka/node_modules/@smithy/node-http-handler"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@smithy/signature-v4",
+        "target": "/home/tarelka/node_modules/@smithy/signature-v4"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@smithy/types",
+        "target": "/home/tarelka/node_modules/@smithy/types"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@swc/helpers",
+        "target": "/home/tarelka/node_modules/@swc/helpers"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/babel__core",
+        "target": "/home/tarelka/node_modules/@types/babel__core"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/babel__generator",
+        "target": "/home/tarelka/node_modules/@types/babel__generator"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/babel__template",
+        "target": "/home/tarelka/node_modules/@types/babel__template"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/babel__traverse",
+        "target": "/home/tarelka/node_modules/@types/babel__traverse"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/chai",
+        "target": "/home/tarelka/node_modules/@types/chai"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/deep-eql",
+        "target": "/home/tarelka/node_modules/@types/deep-eql"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/estree",
+        "target": "/home/tarelka/node_modules/@types/estree"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/json-schema",
+        "target": "/home/tarelka/node_modules/@types/json-schema"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/node",
+        "target": "/home/tarelka/node_modules/@types/node"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/pg",
+        "target": "/home/tarelka/node_modules/@types/pg"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/react",
+        "target": "/home/tarelka/node_modules/@types/react"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@types/react-dom",
+        "target": "/home/tarelka/node_modules/@types/react-dom"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/eslint-plugin",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/eslint-plugin"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/parser",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/parser"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/project-service",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/project-service"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/scope-manager",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/scope-manager"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/tsconfig-utils",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/tsconfig-utils"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/type-utils",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/type-utils"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/types",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/types"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/typescript-estree",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/typescript-estree"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/utils",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/utils"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@typescript-eslint/visitor-keys",
+        "target": "/home/tarelka/node_modules/@typescript-eslint/visitor-keys"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@vitejs/plugin-react",
+        "target": "/home/tarelka/node_modules/@vitejs/plugin-react"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@vitest/expect",
+        "target": "/home/tarelka/node_modules/@vitest/expect"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@vitest/mocker",
+        "target": "/home/tarelka/node_modules/@vitest/mocker"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@vitest/pretty-format",
+        "target": "/home/tarelka/node_modules/@vitest/pretty-format"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@vitest/runner",
+        "target": "/home/tarelka/node_modules/@vitest/runner"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@vitest/snapshot",
+        "target": "/home/tarelka/node_modules/@vitest/snapshot"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@vitest/spy",
+        "target": "/home/tarelka/node_modules/@vitest/spy"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@vitest/utils",
+        "target": "/home/tarelka/node_modules/@vitest/utils"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@zxing/text-encoding",
+        "target": "/home/tarelka/node_modules/@zxing/text-encoding"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/acorn",
+        "target": "/home/tarelka/node_modules/acorn/bin/acorn"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/anthropic-ai-sdk",
+        "target": "/home/tarelka/node_modules/@anthropic-ai/sdk/bin/cli"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/baseline-browser-mapping",
+        "target": "/home/tarelka/node_modules/baseline-browser-mapping/dist/cli.cjs"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/browserslist",
+        "target": "/home/tarelka/node_modules/browserslist/cli.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/esbuild",
+        "target": "/home/tarelka/node_modules/esbuild/bin/esbuild"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/eslint",
+        "target": "/home/tarelka/node_modules/eslint/bin/eslint.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/fxparser",
+        "target": "/home/tarelka/node_modules/fast-xml-parser/src/cli/cli.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/js-yaml",
+        "target": "/home/tarelka/node_modules/js-yaml/bin/js-yaml.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/jsesc",
+        "target": "/home/tarelka/node_modules/jsesc/bin/jsesc"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/json5",
+        "target": "/home/tarelka/node_modules/json5/lib/cli.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/nanoid",
+        "target": "/home/tarelka/node_modules/nanoid/bin/nanoid.cjs"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/next",
+        "target": "/home/tarelka/node_modules/next/dist/bin/next"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/node-which",
+        "target": "/home/tarelka/node_modules/which/bin/node-which"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/parser",
+        "target": "/home/tarelka/node_modules/@babel/parser/bin/babel-parser.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/pino",
+        "target": "/home/tarelka/node_modules/pino/bin.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/rollup",
+        "target": "/home/tarelka/node_modules/rollup/dist/bin/rollup"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/safe-regex2",
+        "target": "/home/tarelka/node_modules/safe-regex2/bin/safe-regex2.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/semver",
+        "target": "/home/tarelka/node_modules/semver/bin/semver.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/tsc",
+        "target": "/home/tarelka/node_modules/typescript/bin/tsc"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/tsserver",
+        "target": "/home/tarelka/node_modules/typescript/bin/tsserver"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/tsx",
+        "target": "/home/tarelka/node_modules/tsx/dist/cli.mjs"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/update-browserslist-db",
+        "target": "/home/tarelka/node_modules/update-browserslist-db/cli.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/vite",
+        "target": "/home/tarelka/node_modules/vite/bin/vite.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/vite-node",
+        "target": "/home/tarelka/node_modules/vite-node/vite-node.mjs"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/vitest",
+        "target": "/home/tarelka/node_modules/vitest/vitest.mjs"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/why-is-node-running",
+        "target": "/home/tarelka/node_modules/why-is-node-running/cli.js"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/.bin/yaml",
+        "target": "/home/tarelka/node_modules/yaml/bin.mjs"
+      }
+    ],
+    "workspaceMapped": [
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@n4/api",
+        "target": "/tmp/dz-disc-unIJ62/wt/apps/api"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@n4/db",
+        "target": "/tmp/dz-disc-unIJ62/wt/packages/db"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@n4/recognizer",
+        "target": "/tmp/dz-disc-unIJ62/wt/apps/recognizer"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@n4/shared",
+        "target": "/tmp/dz-disc-unIJ62/wt/packages/shared"
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/@n4/web",
+        "target": "/tmp/dz-disc-unIJ62/wt/apps/web"
+      }
+    ],
+    "diagnostics": [
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/@fastify/cookie",
+        "detail": "declared baseline dependency @fastify/cookie has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/api/node_modules/@fastify/cookie'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/@fastify/multipart",
+        "detail": "declared baseline dependency @fastify/multipart has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/api/node_modules/@fastify/multipart'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/@n4/db",
+        "detail": "declared baseline dependency @n4/db has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/api/node_modules/@n4/db'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/@n4/shared",
+        "detail": "declared baseline dependency @n4/shared has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/api/node_modules/@n4/shared'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/fastify",
+        "detail": "declared baseline dependency fastify has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/api/node_modules/fastify'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/minio",
+        "detail": "declared baseline dependency minio has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/api/node_modules/minio'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/api/node_modules/pg",
+        "detail": "declared baseline dependency pg has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/api/node_modules/pg'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/@anthropic-ai/sdk",
+        "detail": "declared baseline dependency @anthropic-ai/sdk has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/recognizer/node_modules/@anthropic-ai/sdk'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/@n4/db",
+        "detail": "declared baseline dependency @n4/db has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/recognizer/node_modules/@n4/db'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/@n4/shared",
+        "detail": "declared baseline dependency @n4/shared has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/recognizer/node_modules/@n4/shared'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/minio",
+        "detail": "declared baseline dependency minio has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/recognizer/node_modules/minio'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/recognizer/node_modules/pg",
+        "detail": "declared baseline dependency pg has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/recognizer/node_modules/pg'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/web/node_modules/next",
+        "detail": "declared baseline dependency next has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/web/node_modules/next'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/web/node_modules/react",
+        "detail": "declared baseline dependency react has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/web/node_modules/react'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/apps/web/node_modules/react-dom",
+        "detail": "declared baseline dependency react-dom has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/apps/web/node_modules/react-dom'",
+        "relevant": null
+      },
+      {
+        "path": "/home/tarelka/node_modules/@n4/api",
+        "detail": "external installation exposes live workspace edge: /home/tarelka/apps/api",
+        "relevant": null
+      },
+      {
+        "path": "/home/tarelka/node_modules/@n4/db",
+        "detail": "external installation exposes live workspace edge: /home/tarelka/packages/db",
+        "relevant": null
+      },
+      {
+        "path": "/home/tarelka/node_modules/@n4/recognizer",
+        "detail": "external installation exposes live workspace edge: /home/tarelka/apps/recognizer",
+        "relevant": null
+      },
+      {
+        "path": "/home/tarelka/node_modules/@n4/shared",
+        "detail": "external installation exposes live workspace edge: /home/tarelka/packages/shared",
+        "relevant": null
+      },
+      {
+        "path": "/home/tarelka/node_modules/@n4/web",
+        "detail": "external installation exposes live workspace edge: /home/tarelka/apps/web",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/abstract-logging",
+        "detail": "dependency abstract-logging unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/acorn",
+        "detail": "dependency acorn unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/acorn-jsx",
+        "detail": "dependency acorn-jsx unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/ajv",
+        "detail": "dependency ajv unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/ajv-formats",
+        "detail": "dependency ajv-formats unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/ansi-styles",
+        "detail": "dependency ansi-styles unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/argparse",
+        "detail": "dependency argparse unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/assertion-error",
+        "detail": "dependency assertion-error unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/async",
+        "detail": "dependency async unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/atomic-sleep",
+        "detail": "dependency atomic-sleep unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/available-typed-arrays",
+        "detail": "dependency available-typed-arrays unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/avvio",
+        "detail": "dependency avvio unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/balanced-match",
+        "detail": "dependency balanced-match unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/baseline-browser-mapping",
+        "detail": "dependency baseline-browser-mapping unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/block-stream2",
+        "detail": "dependency block-stream2 unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/bowser",
+        "detail": "dependency bowser unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/brace-expansion",
+        "detail": "dependency brace-expansion unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/browser-or-node",
+        "detail": "dependency browser-or-node unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/browserslist",
+        "detail": "dependency browserslist unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/buffer-crc32",
+        "detail": "dependency buffer-crc32 unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/cac",
+        "detail": "dependency cac unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/call-bind",
+        "detail": "dependency call-bind unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/call-bind-apply-helpers",
+        "detail": "dependency call-bind-apply-helpers unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/call-bound",
+        "detail": "dependency call-bound unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/callsites",
+        "detail": "dependency callsites unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/caniuse-lite",
+        "detail": "dependency caniuse-lite unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/chai",
+        "detail": "dependency chai unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/chalk",
+        "detail": "dependency chalk unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/check-error",
+        "detail": "dependency check-error unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/client-only",
+        "detail": "dependency client-only unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/color",
+        "detail": "dependency color unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/color-convert",
+        "detail": "dependency color-convert unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/color-name",
+        "detail": "dependency color-name unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/color-string",
+        "detail": "dependency color-string unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/concat-map",
+        "detail": "dependency concat-map unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/convert-source-map",
+        "detail": "dependency convert-source-map unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/cookie",
+        "detail": "dependency cookie unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/cross-spawn",
+        "detail": "dependency cross-spawn unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/csstype",
+        "detail": "dependency csstype unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/csv-parse",
+        "detail": "dependency csv-parse unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/debug",
+        "detail": "dependency debug unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/decode-uri-component",
+        "detail": "dependency decode-uri-component unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/deep-eql",
+        "detail": "dependency deep-eql unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/deep-is",
+        "detail": "dependency deep-is unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/define-data-property",
+        "detail": "dependency define-data-property unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/dequal",
+        "detail": "dependency dequal unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/detect-libc",
+        "detail": "dependency detect-libc unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/dunder-proto",
+        "detail": "dependency dunder-proto unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/electron-to-chromium",
+        "detail": "dependency electron-to-chromium unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/es-define-property",
+        "detail": "dependency es-define-property unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/es-errors",
+        "detail": "dependency es-errors unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/es-module-lexer",
+        "detail": "dependency es-module-lexer unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/es-object-atoms",
+        "detail": "dependency es-object-atoms unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/esbuild",
+        "detail": "dependency esbuild unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/escalade",
+        "detail": "dependency escalade unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/escape-string-regexp",
+        "detail": "dependency escape-string-regexp unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/eslint",
+        "detail": "dependency eslint unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/eslint-scope",
+        "detail": "dependency eslint-scope unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/eslint-visitor-keys",
+        "detail": "dependency eslint-visitor-keys unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/espree",
+        "detail": "dependency espree unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/esquery",
+        "detail": "dependency esquery unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/esrecurse",
+        "detail": "dependency esrecurse unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/estraverse",
+        "detail": "dependency estraverse unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/estree-walker",
+        "detail": "dependency estree-walker unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/esutils",
+        "detail": "dependency esutils unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/eventemitter3",
+        "detail": "dependency eventemitter3 unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/expect-type",
+        "detail": "dependency expect-type unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fast-decode-uri-component",
+        "detail": "dependency fast-decode-uri-component unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fast-deep-equal",
+        "detail": "dependency fast-deep-equal unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fast-json-stable-stringify",
+        "detail": "dependency fast-json-stable-stringify unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fast-json-stringify",
+        "detail": "dependency fast-json-stringify unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fast-levenshtein",
+        "detail": "dependency fast-levenshtein unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fast-querystring",
+        "detail": "dependency fast-querystring unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fast-uri",
+        "detail": "dependency fast-uri unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fast-xml-parser",
+        "detail": "dependency fast-xml-parser unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fastify",
+        "detail": "dependency fastify unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fastify-plugin",
+        "detail": "dependency fastify-plugin unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fastq",
+        "detail": "dependency fastq unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/fdir",
+        "detail": "dependency fdir unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/file-entry-cache",
+        "detail": "dependency file-entry-cache unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/filter-obj",
+        "detail": "dependency filter-obj unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/find-my-way",
+        "detail": "dependency find-my-way unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/find-up",
+        "detail": "dependency find-up unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/flat-cache",
+        "detail": "dependency flat-cache unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/flatted",
+        "detail": "dependency flatted unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/for-each",
+        "detail": "dependency for-each unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/function-bind",
+        "detail": "dependency function-bind unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/generator-function",
+        "detail": "dependency generator-function unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/gensync",
+        "detail": "dependency gensync unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/get-intrinsic",
+        "detail": "dependency get-intrinsic unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/get-proto",
+        "detail": "dependency get-proto unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/glob-parent",
+        "detail": "dependency glob-parent unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/globals",
+        "detail": "dependency globals unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/gopd",
+        "detail": "dependency gopd unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/has-flag",
+        "detail": "dependency has-flag unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/has-property-descriptors",
+        "detail": "dependency has-property-descriptors unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/has-symbols",
+        "detail": "dependency has-symbols unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/has-tostringtag",
+        "detail": "dependency has-tostringtag unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/hasown",
+        "detail": "dependency hasown unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/ignore",
+        "detail": "dependency ignore unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/import-fresh",
+        "detail": "dependency import-fresh unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/imurmurhash",
+        "detail": "dependency imurmurhash unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/inherits",
+        "detail": "dependency inherits unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/ipaddr.js",
+        "detail": "dependency ipaddr.js unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/is-arguments",
+        "detail": "dependency is-arguments unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/is-arrayish",
+        "detail": "dependency is-arrayish unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/is-callable",
+        "detail": "dependency is-callable unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/is-extglob",
+        "detail": "dependency is-extglob unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/is-generator-function",
+        "detail": "dependency is-generator-function unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/is-glob",
+        "detail": "dependency is-glob unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/is-regex",
+        "detail": "dependency is-regex unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/is-typed-array",
+        "detail": "dependency is-typed-array unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/isexe",
+        "detail": "dependency isexe unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/js-tokens",
+        "detail": "dependency js-tokens unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/js-yaml",
+        "detail": "dependency js-yaml unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/jsesc",
+        "detail": "dependency jsesc unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/json-buffer",
+        "detail": "dependency json-buffer unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/json-schema-ref-resolver",
+        "detail": "dependency json-schema-ref-resolver unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/json-schema-to-ts",
+        "detail": "dependency json-schema-to-ts unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/json-schema-traverse",
+        "detail": "dependency json-schema-traverse unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/json-stable-stringify-without-jsonify",
+        "detail": "dependency json-stable-stringify-without-jsonify unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/json5",
+        "detail": "dependency json5 unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/keyv",
+        "detail": "dependency keyv unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/levn",
+        "detail": "dependency levn unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/light-my-request",
+        "detail": "dependency light-my-request unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/lightningcss",
+        "detail": "dependency lightningcss unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/lightningcss-linux-x64-gnu",
+        "detail": "dependency lightningcss-linux-x64-gnu unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/lightningcss-linux-x64-musl",
+        "detail": "dependency lightningcss-linux-x64-musl unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/locate-path",
+        "detail": "dependency locate-path unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/lodash",
+        "detail": "dependency lodash unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/lodash.merge",
+        "detail": "dependency lodash.merge unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/loupe",
+        "detail": "dependency loupe unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/lru-cache",
+        "detail": "dependency lru-cache unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/magic-string",
+        "detail": "dependency magic-string unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/math-intrinsics",
+        "detail": "dependency math-intrinsics unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/mime-db",
+        "detail": "dependency mime-db unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/mime-types",
+        "detail": "dependency mime-types unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/minimatch",
+        "detail": "dependency minimatch unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/minio",
+        "detail": "dependency minio unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/ms",
+        "detail": "dependency ms unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/nanoid",
+        "detail": "dependency nanoid unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/natural-compare",
+        "detail": "dependency natural-compare unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/next",
+        "detail": "dependency next unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/node-releases",
+        "detail": "dependency node-releases unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/on-exit-leak-free",
+        "detail": "dependency on-exit-leak-free unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/optionator",
+        "detail": "dependency optionator unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/p-limit",
+        "detail": "dependency p-limit unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/p-locate",
+        "detail": "dependency p-locate unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/parent-module",
+        "detail": "dependency parent-module unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/path-exists",
+        "detail": "dependency path-exists unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/path-key",
+        "detail": "dependency path-key unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pathe",
+        "detail": "dependency pathe unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pathval",
+        "detail": "dependency pathval unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pg",
+        "detail": "dependency pg unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pg-cloudflare",
+        "detail": "dependency pg-cloudflare unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pg-connection-string",
+        "detail": "dependency pg-connection-string unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pg-int8",
+        "detail": "dependency pg-int8 unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pg-pool",
+        "detail": "dependency pg-pool unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pg-protocol",
+        "detail": "dependency pg-protocol unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pg-types",
+        "detail": "dependency pg-types unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pgpass",
+        "detail": "dependency pgpass unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/picocolors",
+        "detail": "dependency picocolors unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/picomatch",
+        "detail": "dependency picomatch unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pino",
+        "detail": "dependency pino unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pino-abstract-transport",
+        "detail": "dependency pino-abstract-transport unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/pino-std-serializers",
+        "detail": "dependency pino-std-serializers unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/possible-typed-array-names",
+        "detail": "dependency possible-typed-array-names unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/postcss",
+        "detail": "dependency postcss unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/postgres-array",
+        "detail": "dependency postgres-array unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/postgres-bytea",
+        "detail": "dependency postgres-bytea unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/postgres-date",
+        "detail": "dependency postgres-date unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/postgres-interval",
+        "detail": "dependency postgres-interval unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/prelude-ls",
+        "detail": "dependency prelude-ls unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/process-warning",
+        "detail": "dependency process-warning unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/punycode",
+        "detail": "dependency punycode unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/query-string",
+        "detail": "dependency query-string unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/quick-format-unescaped",
+        "detail": "dependency quick-format-unescaped unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/react",
+        "detail": "dependency react unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/react-dom",
+        "detail": "dependency react-dom unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/react-refresh",
+        "detail": "dependency react-refresh unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/readable-stream",
+        "detail": "dependency readable-stream unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/real-require",
+        "detail": "dependency real-require unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/require-from-string",
+        "detail": "dependency require-from-string unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/resolve-from",
+        "detail": "dependency resolve-from unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/ret",
+        "detail": "dependency ret unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/reusify",
+        "detail": "dependency reusify unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/rfdc",
+        "detail": "dependency rfdc unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/rollup",
+        "detail": "dependency rollup unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/safe-buffer",
+        "detail": "dependency safe-buffer unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/safe-regex-test",
+        "detail": "dependency safe-regex-test unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/safe-regex2",
+        "detail": "dependency safe-regex2 unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/safe-stable-stringify",
+        "detail": "dependency safe-stable-stringify unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/sax",
+        "detail": "dependency sax unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/scheduler",
+        "detail": "dependency scheduler unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/secure-json-parse",
+        "detail": "dependency secure-json-parse unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/semver",
+        "detail": "dependency semver unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/set-cookie-parser",
+        "detail": "dependency set-cookie-parser unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/set-function-length",
+        "detail": "dependency set-function-length unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/sharp",
+        "detail": "dependency sharp unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/shebang-command",
+        "detail": "dependency shebang-command unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/shebang-regex",
+        "detail": "dependency shebang-regex unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/siginfo",
+        "detail": "dependency siginfo unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/simple-swizzle",
+        "detail": "dependency simple-swizzle unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/sonic-boom",
+        "detail": "dependency sonic-boom unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/source-map-js",
+        "detail": "dependency source-map-js unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/split-on-first",
+        "detail": "dependency split-on-first unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/split2",
+        "detail": "dependency split2 unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/stackback",
+        "detail": "dependency stackback unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/std-env",
+        "detail": "dependency std-env unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/stream-chain",
+        "detail": "dependency stream-chain unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/stream-json",
+        "detail": "dependency stream-json unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/strict-uri-encode",
+        "detail": "dependency strict-uri-encode unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/string_decoder",
+        "detail": "dependency string_decoder unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/strip-json-comments",
+        "detail": "dependency strip-json-comments unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/strip-literal",
+        "detail": "dependency strip-literal unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/strnum",
+        "detail": "dependency strnum unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/styled-jsx",
+        "detail": "dependency styled-jsx unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/supports-color",
+        "detail": "dependency supports-color unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/thread-stream",
+        "detail": "dependency thread-stream unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/through2",
+        "detail": "dependency through2 unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/tinybench",
+        "detail": "dependency tinybench unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/tinyexec",
+        "detail": "dependency tinyexec unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/tinyglobby",
+        "detail": "dependency tinyglobby unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/tinypool",
+        "detail": "dependency tinypool unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/tinyrainbow",
+        "detail": "dependency tinyrainbow unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/tinyspy",
+        "detail": "dependency tinyspy unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/toad-cache",
+        "detail": "dependency toad-cache unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/ts-algebra",
+        "detail": "dependency ts-algebra unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/ts-api-utils",
+        "detail": "dependency ts-api-utils unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/tslib",
+        "detail": "dependency tslib unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/tsx",
+        "detail": "dependency tsx unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/type-check",
+        "detail": "dependency type-check unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/typescript",
+        "detail": "dependency typescript unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/typescript-eslint",
+        "detail": "dependency typescript-eslint unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/undici-types",
+        "detail": "dependency undici-types unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/update-browserslist-db",
+        "detail": "dependency update-browserslist-db unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/uri-js",
+        "detail": "dependency uri-js unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/util",
+        "detail": "dependency util unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/util-deprecate",
+        "detail": "dependency util-deprecate unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/vite",
+        "detail": "dependency vite unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/vite-node",
+        "detail": "dependency vite-node unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/vitest",
+        "detail": "dependency vitest unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/web-encoding",
+        "detail": "dependency web-encoding unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/which",
+        "detail": "dependency which unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/which-typed-array",
+        "detail": "dependency which-typed-array unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/why-is-node-running",
+        "detail": "dependency why-is-node-running unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/word-wrap",
+        "detail": "dependency word-wrap unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/xml2js",
+        "detail": "dependency xml2js unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/xmlbuilder",
+        "detail": "dependency xmlbuilder unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/xtend",
+        "detail": "dependency xtend unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/yallist",
+        "detail": "dependency yallist unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/yaml",
+        "detail": "dependency yaml unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/node_modules/yocto-queue",
+        "detail": "dependency yocto-queue unavailable: Error: external dependency has known live workspace edges",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/packages/db/node_modules/@n4/shared",
+        "detail": "declared baseline dependency @n4/shared has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/packages/db/node_modules/@n4/shared'",
+        "relevant": null
+      },
+      {
+        "path": "/tmp/dz-disc-unIJ62/wt/packages/db/node_modules/pg",
+        "detail": "declared baseline dependency pg has no readable package-local entry: Error: ENOENT: no such file or directory, lstat '/home/tarelka/packages/db/node_modules/pg'",
+        "relevant": null
+      }
+    ]
+  },
+  "perTest": [
+    {
+      "file": "tests/unit/scans-cleanup.test.ts",
+      "verdict": "CANNOT_ISOLATE",
+      "reason": "baseline-dependency-unavailable"
+    },
+    {
+      "file": "tests/unit/s3-storage.test.ts",
+      "verdict": "CANNOT_ISOLATE",
+      "reason": "baseline-dependency-unavailable"
+    }
+  ],
+  "aggregate": "CANNOT_ISOLATE",
+  "findings": [
+    {
+      "severity": "high",
+      "verdict": "CANNOT_ISOLATE",
+      "files": [
+        "tests/unit/scans-cleanup.test.ts",
+        "tests/unit/s3-storage.test.ts"
+      ],
+      "title": "discrimination could not be established (degraded reading)",
+      "detail": "Baseline dependency isolation is unavailable for: tests/unit/scans-cleanup.test.ts [reason: baseline-dependency-unavailable], tests/unit/s3-storage.test.ts [reason: baseline-dependency-unavailable]. Baseline dependency resolution is bare, outside the baseline, or unbound to a contained importer. Restore the required installed dependency or prepare genuine baseline build artifacts separately; do not borrow tip dist. Then rerun discrimination-check. Action: fix-runner-invocation — restore the required local install or prepare genuine baseline build artifacts separately, then rerun. Never borrow tip workspace dist."
+    }
+  ],
+  "measurementValid": false,
+  "primaryAction": "fix-runner-invocation",
+  "finding": {
+    "severity": "high",
+    "verdict": "CANNOT_ISOLATE",
+    "files": [
+      "tests/unit/scans-cleanup.test.ts",
+      "tests/unit/s3-storage.test.ts"
+    ],
+    "title": "discrimination could not be established (degraded reading)",
+    "detail": "Baseline dependency isolation is unavailable for: tests/unit/scans-cleanup.test.ts [reason: baseline-dependency-unavailable], tests/unit/s3-storage.test.ts [reason: baseline-dependency-unavailable]. Baseline dependency resolution is bare, outside the baseline, or unbound to a contained importer. Restore the required installed dependency or prepare genuine baseline build artifacts separately; do not borrow tip dist. Then rerun discrimination-check. Action: fix-runner-invocation — restore the required local install or prepare genuine baseline build artifacts separately, then rerun. Never borrow tip workspace dist."
+  },
+  "deprecated": {
+    "finding": "use findings[0]; removed in 0.9.0"
+  }
+}

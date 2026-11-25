@@ -14,6 +14,8 @@ const FULL_API_ENV: Record<string, string | undefined> = {
   DATABASE_URL: 'postgresql://n4_app:secret@db:5432/n4',
   APP_ORIGIN: 'https://tarelka.example',
   S3_ENDPOINT: 'http://storage:9000',
+  S3_REGION: 'us-east-1',
+  S3_FORCE_PATH_STYLE: 'true',
   S3_BUCKET: 'n4-photos',
   S3_ACCESS_KEY: 'access-key-value',
   S3_SECRET_KEY: 'secret-key-value',
@@ -37,6 +39,8 @@ const FULL_API_ENV: Record<string, string | undefined> = {
 const FULL_RECOGNIZER_ENV: Record<string, string | undefined> = {
   DATABASE_URL: 'postgresql://n4_app:secret@db:5432/n4',
   S3_ENDPOINT: 'http://storage:9000',
+  S3_REGION: 'us-east-1',
+  S3_FORCE_PATH_STYLE: 'true',
   S3_BUCKET: 'n4-photos',
   S3_ACCESS_KEY: 'access-key-value',
   S3_SECRET_KEY: 'secret-key-value',
@@ -113,7 +117,7 @@ describe('валидатор конфигурации api', () => {
   });
 
   it('отсутствие любой из четырёх переменных S3 валит старт с названной переменной', () => {
-    for (const name of ['S3_ENDPOINT', 'S3_BUCKET', 'S3_ACCESS_KEY', 'S3_SECRET_KEY']) {
+    for (const name of ['S3_ENDPOINT', 'S3_REGION', 'S3_FORCE_PATH_STYLE', 'S3_BUCKET', 'S3_ACCESS_KEY', 'S3_SECRET_KEY']) {
       const missing = refusalFor(() => loadApiConfig(withoutVariable(FULL_API_ENV, name)));
       expect(missing.variables, name).toEqual([name]);
       const empty = refusalFor(() => loadApiConfig({ ...FULL_API_ENV, [name]: '' }));
@@ -193,7 +197,7 @@ describe('валидатор конфигурации recognizer', () => {
   });
 
   it('отсутствие любой из четырёх переменных S3 валит старт воркера', () => {
-    for (const name of ['S3_ENDPOINT', 'S3_BUCKET', 'S3_ACCESS_KEY', 'S3_SECRET_KEY']) {
+    for (const name of ['S3_ENDPOINT', 'S3_REGION', 'S3_FORCE_PATH_STYLE', 'S3_BUCKET', 'S3_ACCESS_KEY', 'S3_SECRET_KEY']) {
       expect(refusalFor(() => loadRecognizerConfig(withoutVariable(FULL_RECOGNIZER_ENV, name))).variables, name).toEqual([name]);
     }
   });
@@ -202,7 +206,7 @@ describe('валидатор конфигурации recognizer', () => {
     // `undefined` и `''` — РАЗНЫЕ случаи, и второй почти всегда опечатка в `.env`. Слитые в
     // один, они теряют диагностику; проверенные только у `api`, они оставляют воркер
     // непроверенным, хотя требование говорит про ОБА сервиса (RV-foundation-02).
-    for (const name of ['S3_ENDPOINT', 'S3_BUCKET', 'S3_ACCESS_KEY', 'S3_SECRET_KEY']) {
+    for (const name of ['S3_ENDPOINT', 'S3_REGION', 'S3_FORCE_PATH_STYLE', 'S3_BUCKET', 'S3_ACCESS_KEY', 'S3_SECRET_KEY']) {
       const empty = refusalFor(() => loadRecognizerConfig({ ...FULL_RECOGNIZER_ENV, [name]: '' }));
       expect(empty.variables, `${name}=''`).toEqual([name]);
       // Отказ НАЗЫВАЕТ переменную и последствие, а не только факт: сообщение без цены
@@ -263,4 +267,29 @@ describe('переменные подписки и комиссии (subscriptio
     expect(config.subscription.periodDays).toBe(30);
     expect(config.subscription.holdDays).toBe(14);
   });
+});
+
+describe('Cloud.ru S3 settings for both processes', () => {
+  for (const [name, load, base] of [
+    ['api', loadApiConfig, FULL_API_ENV],
+    ['recognizer', loadRecognizerConfig, FULL_RECOGNIZER_ENV],
+  ] as const) {
+    it(`${name} accepts explicit Cloud.ru addressing and region`, () => {
+      const config = load({ ...base, S3_ENDPOINT: 'https://s3.cloud.ru', S3_REGION: 'ru-central-1', S3_FORCE_PATH_STYLE: 'false' });
+      expect(config.storage).toMatchObject({ endpoint: 'https://s3.cloud.ru', region: 'ru-central-1', forcePathStyle: false });
+    });
+    for (const [variable, values] of [
+      ['S3_ENDPOINT', ['ftp://s3.cloud.ru', 'https://tenant:secret@s3.cloud.ru', 'https://s3.cloud.ru/bucket', 'https://s3.cloud.ru?x=y', 'https://s3.cloud.ru#fragment', 'invalid']],
+      ['S3_REGION', ['ru central', 'ru/central']],
+      ['S3_FORCE_PATH_STYLE', ['yes', '0', 'FALSE']],
+    ] as const) {
+      for (const value of values) {
+        it(`${name} rejects invalid ${variable} (${value.replace('secret', 'redacted')})`, () => {
+          const error = refusalFor(() => load({ ...base, [variable]: value }));
+          expect(error.variables).toContain(variable);
+          expect(error.message).not.toContain('tenant:secret');
+        });
+      }
+    }
+  }
 });

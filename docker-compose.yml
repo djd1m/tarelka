@@ -1,12 +1,3 @@
-# N4 «Тарелка» — скелет стека. Код ещё не написан: сервисы api/recognizer/web НЕ соберутся,
-# пока фича `foundation` не создаст package.json монорепо и исходники. Поэтому они собраны в
-# профиль `app` — без него поднимаются только db и storage, и файл остаётся проверяемым
-# (`docker compose config`) до появления кода.
-#
-# Перед ЛЮБЫМ `docker compose up`:
-#   node ../../.claude/hooks/check-ports.cjs .          # что смотрит наружу (Правило №0)
-#   bash ../../scripts/check-port-conflicts.sh .        # свободно ли то, что мы просим
-# Две проверки, а не одна: это разные вопросы, и ни одна не заменяет другую.
 name: ${N4_COMPOSE_PROJECT:-n4-tarelka}
 
 services:
@@ -37,14 +28,20 @@ services:
       timeout: 2s
       retries: 30
 
-  # ─── Приватный бакет фото. Портов не публикует; консоль наружу не выставляется ───
+  # Локальное S3 для тестов и разработки. Cloud.ru подключается через S3_*.
   storage:
     image: minio/minio:RELEASE.2025-04-22T22-12-26Z@sha256:a1ea29fa28355559ef137d71fc570e508a214ec84ff8083e39bc5428980b015e
+    profiles: [test, local-storage]
     restart: unless-stopped
-    command: server /data --console-address ":9001"
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        : "$${MINIO_ROOT_USER:?задайте N4_STORAGE_ROOT_USER}"
+        : "$${MINIO_ROOT_PASSWORD:?задайте N4_STORAGE_ROOT_PASSWORD}"
+        exec minio server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: ${N4_STORAGE_ROOT_USER:?задайте пользователя MinIO — minioadmin это готовая точка входа, а не «временно для тестов»}
-      MINIO_ROOT_PASSWORD: ${N4_STORAGE_ROOT_PASSWORD:?задайте пароль MinIO — значение по умолчанию запрещено}
+      MINIO_ROOT_USER: ${N4_STORAGE_ROOT_USER:-}
+      MINIO_ROOT_PASSWORD: ${N4_STORAGE_ROOT_PASSWORD:-}
       TZ: Europe/Moscow
     expose: ["9000", "9001"]
     volumes:
@@ -56,33 +53,31 @@ services:
       timeout: 3s
       retries: 20
 
-  # ─── Провижининг бакета и IAM-пользователя приложения (фича `scan-pipeline`) ───
-  # ОТКЛОНЕНИЕ/дополнение, названное явно (`receipts/impl-scan-pipeline.md`): `foundation`
-  # объявила `N4_S3_ACCESS_KEY`/`N4_S3_SECRET_KEY` переменными `api`/`recognizer`, но НИГДЕ
-  # не создавала соответствующего пользователя MinIO — работали бы только ROOT-креды.
-  # `api`/`recognizer` не должны держать root-пароль хранилища: он даёт больше прав, чем
-  # нужно операции с одним бакетом. Одноразовый контейнер создаёт бакет и пользователя с
-  # правами ТОЛЬКО на него, затем завершается — это НЕ сервис продукта.
   storage-init:
-    # `minio/mc` не доступен для вытягивания в этой сети (проверено 2026-09-12: pull access
-    # denied); образ `minio/minio` уже используется сервисом `storage` и несёт СВОЙ `mc`
-    # (используется его же healthcheck'ом, `test: mc ready local`) — переиспользуем ЕГО, а
-    # не заводим вторую зависимость от недоступного реестра.
     image: minio/minio:RELEASE.2025-04-22T22-12-26Z@sha256:a1ea29fa28355559ef137d71fc570e508a214ec84ff8083e39bc5428980b015e
-    profiles: [app, dev, edge, test]
+    profiles: [test, local-storage]
     restart: "no"
     environment:
-      MC_HOST_local: http://${N4_STORAGE_ROOT_USER:?}:${N4_STORAGE_ROOT_PASSWORD:?}@storage:9000
+      N4_STORAGE_ROOT_USER: ${N4_STORAGE_ROOT_USER:-}
+      N4_STORAGE_ROOT_PASSWORD: ${N4_STORAGE_ROOT_PASSWORD:-}
+      N4_S3_BUCKET: ${N4_S3_BUCKET:-n4-photos}
+      N4_S3_ACCESS_KEY: ${N4_S3_ACCESS_KEY:-}
+      N4_S3_SECRET_KEY: ${N4_S3_SECRET_KEY:-}
     entrypoint: ["sh", "-c"]
     command:
       - |
-        set -e
-        mc mb --ignore-existing "local/${N4_S3_BUCKET:-n4-photos}"
-        mc admin user add local "${N4_S3_ACCESS_KEY:?}" "${N4_S3_SECRET_KEY:?}" || true
+        set -eu
+        : "$${N4_STORAGE_ROOT_USER:?задайте пользователя MinIO}"
+        : "$${N4_STORAGE_ROOT_PASSWORD:?задайте пароль MinIO}"
+        : "$${N4_S3_ACCESS_KEY:?задайте локальный ключ S3}"
+        : "$${N4_S3_SECRET_KEY:?задайте локальный секрет S3}"
+        mc alias set local http://storage:9000 "$${N4_STORAGE_ROOT_USER}" "$${N4_STORAGE_ROOT_PASSWORD}"
+        mc mb --ignore-existing "local/$${N4_S3_BUCKET}"
+        mc admin user add local "$${N4_S3_ACCESS_KEY}" "$${N4_S3_SECRET_KEY}"
         printf '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:*"],"Resource":["arn:aws:s3:::%s","arn:aws:s3:::%s/*"]}]}' \
-          "${N4_S3_BUCKET:-n4-photos}" "${N4_S3_BUCKET:-n4-photos}" > /tmp/policy.json
-        mc admin policy create local n4-photos-rw /tmp/policy.json || true
-        mc admin policy attach local n4-photos-rw --user "${N4_S3_ACCESS_KEY:?}" || true
+          "$${N4_S3_BUCKET}" "$${N4_S3_BUCKET}" > /tmp/policy.json
+        mc admin policy create local n4-photos-rw /tmp/policy.json
+        mc admin policy attach local n4-photos-rw --user "$${N4_S3_ACCESS_KEY}"
     networks: [private]
     depends_on:
       storage: { condition: service_healthy }
@@ -105,10 +100,13 @@ services:
       APP_ORIGIN: ${APP_ORIGIN:?внешний адрес обязателен — он определяет каждую выдаваемую ссылку}
       # Роль n4_app создаётся миграцией 001 (фича foundation), а не этим файлом.
       DATABASE_URL: postgresql://n4_app:${N4_DB_APP_PASSWORD:?задайте пароль роли приложения}@db:5432/n4
-      S3_ENDPOINT: http://storage:9000
-      S3_BUCKET: ${N4_S3_BUCKET:-n4-photos}
-      S3_ACCESS_KEY: ${N4_S3_ACCESS_KEY:?задайте ключ доступа приложения к бакету}
-      S3_SECRET_KEY: ${N4_S3_SECRET_KEY:?задайте секрет доступа приложения к бакету}
+      # Пустое значение валидируется env.ts при старте приложения.
+      S3_ENDPOINT: ${S3_ENDPOINT:-}
+      S3_REGION: ${S3_REGION:-}
+      S3_FORCE_PATH_STYLE: "${S3_FORCE_PATH_STYLE:-}"
+      S3_BUCKET: ${S3_BUCKET:-}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-}
       # Токен бота — только здесь: из него производится секрет HMAC для проверки initData.
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?токен бота обязателен — без него вход через Mini App неисполним}
       # ── подписка и комиссия. Секретов платёжного провайдера у `web` и `recognizer` нет
@@ -140,8 +138,6 @@ services:
     networks: [private, egress]
     depends_on:
       db: { condition: service_healthy }
-      storage: { condition: service_healthy }
-      storage-init: { condition: service_completed_successfully }
     healthcheck:
       # Проба переведена с TCP на HTTP в фиче `foundation`: служебный `GET /health` введён
       # решением по канону (он ВНЕ префикса /api/v1, продуктовых маршрутов по-прежнему 14).
@@ -164,10 +160,13 @@ services:
       NODE_ENV: production
       TZ: Europe/Moscow
       DATABASE_URL: postgresql://n4_app:${N4_DB_APP_PASSWORD:?задайте пароль роли приложения}@db:5432/n4
-      S3_ENDPOINT: http://storage:9000
-      S3_BUCKET: ${N4_S3_BUCKET:-n4-photos}
-      S3_ACCESS_KEY: ${N4_S3_ACCESS_KEY:?задайте ключ доступа приложения к бакету}
-      S3_SECRET_KEY: ${N4_S3_SECRET_KEY:?задайте секрет доступа приложения к бакету}
+      # Пустое значение валидируется env.ts при старте приложения.
+      S3_ENDPOINT: ${S3_ENDPOINT:-}
+      S3_REGION: ${S3_REGION:-}
+      S3_FORCE_PATH_STYLE: "${S3_FORCE_PATH_STYLE:-}"
+      S3_BUCKET: ${S3_BUCKET:-}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-}
       # Выбор реализации адаптера. Закрытый набор значений принадлежит КОДУ (fake | live),
       # переменная только выбирает. Безопасное значение по умолчанию — fake: оно не тратит денег.
       N4_MODEL_PROVIDER: ${N4_MODEL_PROVIDER:-fake}
@@ -184,8 +183,6 @@ services:
     networks: [private, egress]
     depends_on:
       db: { condition: service_healthy }
-      storage: { condition: service_healthy }
-      storage-init: { condition: service_completed_successfully }
     # healthcheck не объявлен осознанно: от recognizer не зависит ни один сервис, а проверка
     # «процесс жив» повторила бы restart: unless-stopped. Молчащий воркер ловится метрикой
     # «возраст старейшего задания queued > 60 с» (Completion.md, Monitoring), а не healthcheck'ом.
@@ -306,9 +303,11 @@ services:
       N4_RATE_LIMIT_READ_PER_MIN: ${N4_RATE_LIMIT_READ_PER_MIN:?порог частоты для чтения не задан}
       APP_ORIGIN: ${APP_ORIGIN:?внешний адрес обязателен}
       S3_ENDPOINT: http://storage:9000
+      S3_REGION: us-east-1
+      S3_FORCE_PATH_STYLE: "true"
       S3_BUCKET: ${N4_S3_BUCKET:-n4-photos}
-      S3_ACCESS_KEY: ${N4_S3_ACCESS_KEY:?задайте ключ доступа приложения к бакету}
-      S3_SECRET_KEY: ${N4_S3_SECRET_KEY:?задайте секрет доступа приложения к бакету}
+      S3_ACCESS_KEY: ${N4_S3_ACCESS_KEY:-}
+      S3_SECRET_KEY: ${N4_S3_SECRET_KEY:-}
       # Тесты наружу не ходят: поставщик модели подменяется детерминированным фейком.
       N4_MODEL_PROVIDER: fake
       N4_SCAN_LIMIT_USER: ${N4_SCAN_LIMIT_USER:?потолок на пользователя не задан}

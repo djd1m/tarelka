@@ -57,6 +57,25 @@ export function requireText(name: string, raw: string | undefined, consequence: 
   return present(name, raw, consequence);
 }
 
+/** Endpoint подписи S3 должен быть origin без реквизитов, пути и параметров. */
+export function requireS3Endpoint(raw: string | undefined): string {
+  const value = present('S3_ENDPOINT', raw, 'без endpoint бакета фотографии недоступны');
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch {
+    throw new ConfigError('S3_ENDPOINT', 'invalid', 'ожидался HTTP(S) origin S3');
+  }
+  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.pathname !== '/' || url.search || url.hash) {
+    throw new ConfigError('S3_ENDPOINT', 'invalid', 'ожидался HTTP(S) origin S3 без реквизитов, пути и параметров');
+  }
+  return url.origin;
+}
+
+export function requireBoolean(name: string, raw: string | undefined, consequence: string): boolean {
+  return requireEnum(name, raw, ['true', 'false'], consequence) === 'true';
+}
+
 /**
  * Целое СТРОГО больше нуля. `0` здесь не «запретить всё», а несконфигурированный потолок:
  * значение, которое никогда не было настроено, не имеет права выглядеть как настроенное.

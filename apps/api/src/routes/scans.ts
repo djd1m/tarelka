@@ -225,21 +225,24 @@ export function registerScansRoutes(app: FastifyInstance, deps: ScansRouteDeps):
         return { kind: 'queued' as const, scanId: recognitionId };
       });
     } catch (error) {
+      // Откат уже завершён. Сбой уборки подхватит периодический уборщик орфанов.
+      try {
+        await deps.storage.removeObject(objectKey);
+      } catch (cleanupError) {
+        deps.logger.warn('scan_cleanup_failed', { message: (cleanupError as Error).message });
+      }
       if (error instanceof IdempotentReplay) {
         // Повтор: удалить СВОЙ, только что загруженный объект (адресован recognition_id
         // ЭТОЙ отклонённой попытки — структурно не может задеть чужой, PC2-01).
-        await deps.storage.removeObject(objectKey);
         return reply.code(202).send(ok({ scan_id: error.scanId, status: error.status }));
       }
       if (error instanceof QuotaRefused) {
-        await deps.storage.removeObject(objectKey);
         const resetAt = nextMoscowMidnight();
         return reply
           .code(429)
           .send(fail('quota_exhausted', 'потолок исчерпан', { limit: limitForScope(error.limits, error.scope), reset_at: resetAt, scope: error.scope }));
       }
       deps.logger.error('enqueue_scan_failed', { message: (error as Error).message });
-      await deps.storage.removeObject(objectKey);
       return reply.code(503).send(fail('dependency_unavailable', 'база данных недоступна'));
     }
 

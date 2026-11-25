@@ -7,50 +7,16 @@
 // Процесс, открывший сокет и упавший на первом запросе, выглядит здоровым для compose
 // ровно столько, сколько нужно, чтобы дефект уехал дальше.
 
-import { ConfigValidationError, createLogger, SERVICE_LOG_FIELDS, type ApiConfig } from '@n4/shared';
+import { ConfigValidationError, createLogger, SERVICE_LOG_FIELDS } from '@n4/shared';
 import { createPool } from '@n4/db';
 import { API_REQUIRED_VARIABLES, loadApiConfig } from './env.js';
 import { startRenewalLoop } from './renewals/loop.js';
 import { selectPaymentProvider } from './payments/select-provider.js';
 import { buildServer } from './server.js';
-import { createPhotoStorage } from './photo/store-original.js';
-import { purgeOrphanObjects, type StorageObjectLister } from './photo/purge-orphans.js';
+import { createPhotoObjectLister } from './photo/storage-object-lister.js';
+import { purgeOrphanObjects } from './photo/purge-orphans.js';
 
 const PORT = 3000;
-
-/**
- * `StorageObjectLister` на настоящем MinIO (RV-scan-pipeline-03 — high: функция уборки
- * орфанов существовала, но приложение её нигде не вызывало; производственного
- * `listObjects` не было вовсе).
- */
-function createBucketLister(config: ApiConfig): StorageObjectLister {
-  const clientPromise = (async () => {
-    const { Client } = await import('minio');
-    const url = new URL(config.storage.endpoint);
-    return new Client({
-      endPoint: url.hostname,
-      port: url.port !== '' ? Number.parseInt(url.port, 10) : url.protocol === 'https:' ? 443 : 80,
-      useSSL: url.protocol === 'https:',
-      accessKey: config.storage.accessKey,
-      secretKey: config.storage.secretKey,
-    });
-  })();
-  const photoStorage = createPhotoStorage(config.storage);
-  return {
-    async *listObjects() {
-      const client = await clientPromise;
-      const stream = client.listObjectsV2(config.storage.bucket, '', true);
-      for await (const item of stream) {
-        // `BucketItem.name`/`lastModified` — `undefined` только для «префиксных» записей,
-        // которых здесь нет (`recursive: true`, без `Prefix`).
-        const entry = item as { name?: string; lastModified?: Date };
-        if (entry.name === undefined || entry.lastModified === undefined) continue;
-        yield { key: entry.name, lastModified: entry.lastModified };
-      }
-    },
-    removeObject: (key) => photoStorage.removeObject(key),
-  };
-}
 
 async function main(): Promise<void> {
   let config;
@@ -123,7 +89,7 @@ async function main(): Promise<void> {
   // Уборка орфанов бакета (FR-scan-pipeline-14 шаг 12, RV-scan-pipeline-03). Раз в час —
   // порог самих орфанов уже час (`CANON.orphanObjectMaxAgeMs`); реже сироты копились бы
   // сутками до первой уборки.
-  const orphanLister = createBucketLister(config);
+  const orphanLister = createPhotoObjectLister(config.storage);
   const hourMs = 60 * 60 * 1000;
   const orphanTimer = setInterval(() => {
     purgeOrphanObjects(pool, orphanLister)

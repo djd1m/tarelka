@@ -20,7 +20,7 @@ const PROJECT = fileURLToPath(new URL('../../', import.meta.url));
 const API_VARIABLES = [
   'APP_ORIGIN', 'DATABASE_URL', 'N4_ESCALATION_LIMIT_DAY', 'N4_RATE_LIMIT_MUTATE_PER_MIN',
   'N4_RATE_LIMIT_READ_PER_MIN', 'N4_SCAN_LIMIT_DAY', 'N4_SCAN_LIMIT_USER',
-  'S3_ACCESS_KEY', 'S3_BUCKET', 'S3_ENDPOINT', 'S3_SECRET_KEY',
+  'S3_ACCESS_KEY', 'S3_BUCKET', 'S3_ENDPOINT', 'S3_SECRET_KEY', 'S3_REGION', 'S3_FORCE_PATH_STYLE',
   // consent-and-telegram-auth: обязательная переменная сверх набора foundation.
   'TELEGRAM_BOT_TOKEN',
   // subscription-and-commission: цена, период, окно возврата, потолок Pro, режим платежей и
@@ -35,7 +35,7 @@ const RECOGNIZER_VARIABLES = [
   // `apps/recognizer/src/env.ts` теперь читает её той же формой, что ANTHROPIC_API_KEY.
   'ANTHROPIC_API_KEY', 'DATABASE_URL', 'N4_ESCALATION_LIMIT_DAY', 'N4_MODEL_PROVIDER',
   'N4_SCAN_LIMIT_DAY', 'N4_SCAN_LIMIT_USER', 'OPENROUTER_API_KEY',
-  'S3_ACCESS_KEY', 'S3_BUCKET', 'S3_ENDPOINT', 'S3_SECRET_KEY',
+  'S3_ACCESS_KEY', 'S3_BUCKET', 'S3_ENDPOINT', 'S3_SECRET_KEY', 'S3_REGION', 'S3_FORCE_PATH_STYLE',
 ];
 
 function composeConfig(apiVariables: string[]): string {

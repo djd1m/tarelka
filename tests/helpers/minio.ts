@@ -17,6 +17,8 @@ function required(name: string): string {
 export function testStorageConfig(): StorageConfig {
   return {
     endpoint: required('S3_ENDPOINT'),
+    region: required('S3_REGION'),
+    forcePathStyle: required('S3_FORCE_PATH_STYLE') === 'true',
     bucket: required('S3_BUCKET'),
     accessKey: required('S3_ACCESS_KEY'),
     secretKey: required('S3_SECRET_KEY'),
@@ -30,6 +32,8 @@ function rawClient(storage: StorageConfig): MinioClient {
     endPoint: url.hostname,
     port: url.port !== '' ? Number.parseInt(url.port, 10) : useSSL ? 443 : 80,
     useSSL,
+    region: storage.region,
+    pathStyle: storage.forcePathStyle,
     accessKey: storage.accessKey,
     secretKey: storage.secretKey,
   });

@@ -1,0 +1,15 @@
+sequenceDiagram
+  participant API
+  participant S3 as Cloud.ru S3
+  participant DB as PostgreSQL
+  participant Worker as Recognizer
+  API->>S3: PutObject оригинал
+  API->>DB: photo и recognition
+  Worker->>DB: аренда задания
+  Worker->>S3: GetObject оригинал
+  Worker->>S3: PutObject normalized
+  Worker->>DB: результат
+  API->>S3: подписанный GET
+  Worker->>S3: DeleteObject по сроку
+  S3-->>Worker: подтверждение
+  Worker->>DB: file_state purged

@@ -9,7 +9,7 @@ export function testApiConfig(overrides: { rateLimits?: RateLimits } = {}): ApiC
   return {
     databaseUrl: process.env.DATABASE_URL ?? '',
     appOrigin: 'https://tarelka.test',
-    storage: { endpoint: 'http://storage:9000', bucket: 'n4-photos', accessKey: 'test-access', secretKey: 'test-secret' },
+    storage: { region: 'us-east-1', forcePathStyle: true, endpoint: 'http://storage:9000', bucket: 'n4-photos', accessKey: 'test-access', secretKey: 'test-secret' },
     payments: { N4_PAYMENTS_MODE: 'fake' },
     subscription: { priceMinor: 100_000, periodDays: 30, holdDays: 14, scanLimitPro: 100 },
     quota: { scanLimitUser: 10, scanLimitDay: 3000, escalationLimitDay: 600 },

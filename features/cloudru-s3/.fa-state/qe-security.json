@@ -1,0 +1,56 @@
+{
+  "schema": "fa-review-convergence-1",
+  "phase": "qe",
+  "nonce": "6fc78fa2-48a6-4618-bf05-2288cecee330",
+  "revision": "6e03cfd957a551e2310621a6bac7edbf99e937369398510618287f6a848afad7",
+  "author": {
+    "addressed": [],
+    "changedScope": [
+      "apps/api/src/photo/purge-orphans.ts",
+      "apps/api/src/photo/storage-object-lister.ts",
+      "apps/api/src/routes/scans-photo.ts",
+      "apps/api/src/routes/share-card-internal.ts",
+      "apps/api/src/server.ts",
+      "apps/api/src/share/render-card-image.ts",
+      "apps/recognizer/src/bootstrap.ts",
+      "apps/recognizer/src/consent/erasure-job.ts",
+      "apps/recognizer/src/photo/purge-expired.ts",
+      "features/cloudru-s3/03_adr/001-use-shared-s3-client.md",
+      "features/cloudru-s3/03_adr/002-isolate-local-storage.md",
+      "features/cloudru-s3/06_implementation_plan.md",
+      "openspec/changes/cloudru-s3/proposal.md",
+      "openspec/changes/cloudru-s3/tasks.md",
+      "packages/db/src/pool.ts",
+      "tests/unit/s3-storage.test.ts"
+    ],
+    "classification": "structural",
+    "delta": "Пагинация отслеживает все ранее выданные токены, тест добавляет цикл A→B→A. Усилены normalized GET byte и фактическое удаление существующего объекта. Snapshot включает неизменённые вызывающие файлы. Метаданные ADR/README/proposal/tasks актуализированы после выполнения независимых проверок.",
+    "evidence": "Повторные npm test587passed1skip, typecheck/lint/API build0. Новые assertions в s3-storage. Все четыре fleet reviewer отчёта COMPLETE.",
+    "newRisks": {
+      "assessment": "Дополнительных серьёзных рисков не выявлено. Зависимости live Cloud и полного Docker integration сохраняются.",
+      "evidence": "Fleet reports и 08_qe_report, источники изменений указаны в changedScope.",
+      "conditions": []
+    }
+  },
+  "reviews": [
+    {
+      "reviewer": "qe-security",
+      "family": "codex",
+      "independent": true,
+      "verdict": "clean",
+      "conditions": [],
+      "verifications": [],
+      "newRisks": {
+        "assessment": "none identified after independent focused review of actual changes and affected security/privacy dependencies",
+        "evidence": "Focused independent structural refresh at current host snapshot: read qe-author.json and verified complete changedScope coverage against host.changedPaths; inspected lister seenTokens Set and real A-to-B-to-A HTTP fixture; read normalized GET bytes and existing-object deletion assertions for each remover; independently reran Node22 focused suite: 4 files, 70 tests passed. Previously reviewed deletion guard, retry marking, ownership/server-side presign, scheduler and transaction dependencies are now included in measured manifest; checked these dependencies have no Git diff. Read finalized ADR status, proposal/tasks and plan targets; limits remain explicit. Verified every current host manifest digest. No new security/privacy risk found in structural delta. Prior successful independent Compose app/test/mixed isolation checks remain applicable: Compose, credential flow and runbook digests unchanged. Live Cloud.ru/DB-MinIO verification still unavailable without keys/Docker daemon.",
+        "conditions": []
+      },
+      "authorAssessmentChecked": true,
+      "deltaVerification": {
+        "classification": "structural",
+        "evidence": "Focused independent structural refresh at current host snapshot: read qe-author.json and verified complete changedScope coverage against host.changedPaths; inspected lister seenTokens Set and real A-to-B-to-A HTTP fixture; read normalized GET bytes and existing-object deletion assertions for each remover; independently reran Node22 focused suite: 4 files, 70 tests passed. Previously reviewed deletion guard, retry marking, ownership/server-side presign, scheduler and transaction dependencies are now included in measured manifest; checked these dependencies have no Git diff. Read finalized ADR status, proposal/tasks and plan targets; limits remain explicit. Verified every current host manifest digest. No new security/privacy risk found in structural delta.",
+        "implementationVerified": true
+      }
+    }
+  ]
+}

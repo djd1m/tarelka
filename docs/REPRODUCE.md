@@ -1,3 +1,7 @@
+> Обновление хранения Cloud.ru S3. Актуальная настройка бакета и перенос фотографий
+> описаны в [cloudru-s3.md](operations/cloudru-s3.md). Приложение читает шесть S3_* параметров.
+> N4_STORAGE_ROOT_* и N4_S3_* используются локальным MinIO в профилях test/local-storage.
+
 # Как повторить «Тарелку» (N4) с нуля
 
 Дата: 2026-09-29 · Основа: основная ветка после 11 фич роадмапа, партнёрских доработок 16–17.09,
@@ -207,13 +211,15 @@ $DC --profile test down -v
 # 1) env стенда — вне git, права 600. У нас это .env в каталоге проекта основного checkout
 #    (он в .gitignore; compose и check-port-conflicts читают его без --env-file).
 umask 077; cp .env.example .env
-# ВНИМАНИЕ: .env.example НЕ содержит переменных подписки и платежей — дописать их (G-23, список ниже).
+# .env.example содержит параметры Cloud.ru, подписки и платежей. Заполните секреты.
 ```
 
 | Переменная | Значение на стенде | Откуда |
 |---|---|---|
 | `N4_DB_ADMIN_PASSWORD`, `N4_DB_APP_PASSWORD`, `N4_STORAGE_ROOT_PASSWORD`, `N4_S3_SECRET_KEY` | секреты | `openssl rand -hex 24` |
-| `N4_STORAGE_ROOT_USER`, `N4_S3_ACCESS_KEY` | имена | любые, не `minioadmin` |
+| `S3_ENDPOINT`, `S3_REGION`, `S3_FORCE_PATH_STYLE` | `https://s3.cloud.ru`, `ru-central-1`, `false` | Cloud.ru S3 |
+| `S3_BUCKET`, `S3_ACCESS_KEY`, `S3_SECRET_KEY` | приватный бакет и отдельный Object Storage ключ | владелец |
+| `N4_STORAGE_ROOT_USER`, `N4_S3_ACCESS_KEY` | имена только для локального MinIO | профили test/local-storage |
 | `APP_ORIGIN` | `https://tarelka.aicoding.space` | домен (шаг 7); на него строится `return_url` оплаты |
 | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME` | токен, `calorytarelka_bot` | владелец, @BotFather |
 | `N4_SCAN_LIMIT_USER` / `N4_SCAN_LIMIT_DAY` / `N4_ESCALATION_LIMIT_DAY` | 20 / 3000 / 600 | `model-cost-contract.md`; канон 10 на пользователя |
@@ -246,7 +252,7 @@ node ../../.claude/hooks/check-ports.cjs .     # 0
 ```bash
 # 3) образы и хранилища
 docker compose --project-directory . --profile edge build
-docker compose --project-directory . up -d --wait db storage
+docker compose --project-directory . up -d --wait db
 # 4) миграции 001–013, затем данные (шаг 3.3 с тем же -p)
 docker compose --project-directory . -p "${N4_COMPOSE_PROJECT:-n4-tarelka}" --profile test run --rm --no-deps -T test \
   sh -c 'DATABASE_URL="${DATABASE_URL%/n4_test}/n4" npm run migrate'

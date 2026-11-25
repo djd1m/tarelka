@@ -28,9 +28,11 @@ export interface RateLimits {
   readonly readPerMinute: number;
 }
 
-/** Доступ к приватному бакету фото. В этой фиче объекты не кладутся и не читаются. */
+/** Доступ к приватному S3-совместимому бакету фото. */
 export interface StorageConfig {
   readonly endpoint: string;
+  readonly region: string;
+  readonly forcePathStyle: boolean;
   readonly bucket: string;
   readonly accessKey: string;
   readonly secretKey: string;

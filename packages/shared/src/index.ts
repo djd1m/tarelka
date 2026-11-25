@@ -1,5 +1,6 @@
 export * from './config/env.js';
 export * from './config/types.js';
+export * from './storage/photo-s3-client.js';
 export * from './domain/enums.js';
 export * from './domain/units.js';
 export * from './domain/classify-contact.js';

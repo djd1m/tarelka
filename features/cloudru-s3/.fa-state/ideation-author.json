@@ -1,0 +1,19 @@
+{
+  "addressed": [
+    "QCS-Q-001",
+    "RISK-001"
+  ],
+  "changedScope": [
+    "features/cloudru-s3/03_adr/001-use-shared-s3-client.md",
+    "features/cloudru-s3/03_adr/002-isolate-local-storage.md",
+    "features/cloudru-s3/05_architecture.md"
+  ],
+  "classification": "structural",
+  "delta": "ADR-001/002 и архитектура теперь требуют обработки ошибок трёх ветвей rollback cleanup и GetBucketVersioning перед каждым DELETE без кэша. Указаны тестовые файлы, runtime-права и unversioned bucket.",
+  "evidence": "Текущие Decision/Confirmation в ADR-001/002, секция Ошибки и повторы архитектуры.",
+  "newRisks": {
+    "assessment": "Новая зависимость удаления от GetBucketVersioning требует отдельного IAM-права.",
+    "evidence": "ADR-002 и архитектура требуют право и явный отказ при недоступной проверке.",
+    "conditions": []
+  }
+}

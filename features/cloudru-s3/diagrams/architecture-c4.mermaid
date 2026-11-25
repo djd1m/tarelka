@@ -1,0 +1,8 @@
+flowchart LR
+  Browser[Браузер] --> API[Fastify API]
+  API --> DB[(PostgreSQL)]
+  Worker[Recognizer] --> DB
+  API --> Factory[Общая фабрика AWS S3]
+  Worker --> Factory
+  Factory --> Cloud[(Приватный бакет Cloud.ru)]
+  Test[Изолированные тесты] --> MinIO[(Локальный MinIO)]

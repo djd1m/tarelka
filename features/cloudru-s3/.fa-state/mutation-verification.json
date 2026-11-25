@@ -1,0 +1,24 @@
+[
+  {
+    "mutation": "rollback",
+    "exit": 1,
+    "assertion_failed": true,
+    "test": "preserves replay, quota and database responses when rollback cleanup fails"
+  },
+  {
+    "mutation": "versioning",
+    "exit": 1,
+    "assertion_failed": true,
+    "test": "checks versioning before every delete and refuses unsafe or unreadable status"
+  },
+  {
+    "mutation": "pagination",
+    "exit": 1,
+    "assertion_failed": true,
+    "test": "feeds nonempty page two to the existing orphan policy and preserves prefix and continuation"
+  },
+  {
+    "restored_control": "passed",
+    "exit": 0
+  }
+]

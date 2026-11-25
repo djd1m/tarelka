@@ -9,12 +9,13 @@
     "start": "node dist/bootstrap.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1137.0",
+    "@aws-sdk/s3-request-presigner": "3.1137.0",
     "@fastify/cookie": "11.1.2",
     "@fastify/multipart": "9.2.1",
     "@n4/db": "0.1.0",
     "@n4/shared": "0.1.0",
     "fastify": "5.12.4",
-    "minio": "8.0.6",
     "pg": "8.23.0",
     "sharp": "0.33.5"
   }

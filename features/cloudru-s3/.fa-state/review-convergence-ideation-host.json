@@ -1,0 +1,82 @@
+{
+  "schema": "fa-review-convergence-1",
+  "phase": "ideation",
+  "reviewers": [
+    {
+      "id": "qcsd-quality",
+      "family": "codex"
+    },
+    {
+      "id": "qcsd-risk",
+      "family": "codex"
+    },
+    {
+      "id": "qcsd-testability",
+      "family": "codex"
+    }
+  ],
+  "snapshot": {
+    "nonce": "fcb1212d-8918-46bc-b11b-93a92f7d9861",
+    "revision": "62b4f7fd2744fcaf1699de26f8eed81f7d30acad75ea601c318c92b65d190e2d",
+    "manifest": [
+      {
+        "path": "features/cloudru-s3/00_complexity_assessment.md",
+        "digest": "3e102a8ae510c2aa9150a0b22fff55838229bc77db69dd60863dc7e3bc4e1d7c"
+      },
+      {
+        "path": "features/cloudru-s3/01_requirements.md",
+        "digest": "3bf6dcc0ba12b4f48c1f6ea6831e113b60917bbc9bd1432a3941861ac233353c"
+      },
+      {
+        "path": "features/cloudru-s3/02_research.md",
+        "digest": "20dc5180d681639e6ddf96c7bb4217e0c12e61b1bca0b3b71dacf4bcc30f6e9b"
+      },
+      {
+        "path": "features/cloudru-s3/03_adr/001-use-shared-s3-client.md",
+        "digest": "962f73e868a43a7abb356d6a492f095365930e19f5769087cb55f67691583bb9"
+      },
+      {
+        "path": "features/cloudru-s3/03_adr/002-isolate-local-storage.md",
+        "digest": "bfbbf2957c313622466cf7fb995da05444997f1089d68a26d00c86bdd7872f06"
+      },
+      {
+        "path": "features/cloudru-s3/04_domain_model.md",
+        "digest": "f832759f991990c3009ada1d376b6d362d90a85e508bd3f87680e5ff3314d227"
+      },
+      {
+        "path": "features/cloudru-s3/05_architecture.md",
+        "digest": "e4313ce5c377ff40784c22e4b77fcb81520ebc95911a52d5e30e033307fce63e"
+      }
+    ]
+  },
+  "conditions": [
+    {
+      "id": "QCS-Q-001",
+      "owner": "qcsd-quality",
+      "severity": "HIGH",
+      "classification": "structural",
+      "requirement": "Preserve POST /scans responses during rollback-object cleanup failure. Explicitly plan adapting all three cleanup call sites to catch and log S3 removal failure, retaining 202 replay, 429 quota refusal and 503 DB failure, with orphan cleanup as retry safety net. Name regression tests for the three normal route branches.",
+      "scope": [
+        "features/cloudru-s3/03_adr/001-use-shared-s3-client.md",
+        "features/cloudru-s3/05_architecture.md"
+      ],
+      "evidence": "apps/api/src/routes/scans.ts lines 231, 235 and 242 await storage.removeObject without catch. Existing store-original.ts removeObject swallows all failures. ADR-001 changes DeleteObject to propagate failures while architecture only asserts that business-layer best-effort handling exists. A failing S3 DELETE would currently escape those route branches and replace their established 202/429/503 responses."
+    },
+    {
+      "id": "RISK-001",
+      "owner": "qcsd-risk",
+      "severity": "HIGH",
+      "classification": "structural",
+      "requirement": "Before destructive storage operations can report success, verify that the target bucket has never-enabled versioning (GetBucketVersioning Status absent). Reject Enabled and Suspended and propagate inability to read versioning status. Apply the same guard to expiry cleanup, account erasure, orphan cleanup, and API rollback deletion. Add named automated checks for versioned/suspended/forbidden status and unversioned successful deletion, and document the required GetBucketVersioning permission and unversioned target bucket.",
+      "scope": [
+        "features/cloudru-s3/03_adr/001-use-shared-s3-client.md",
+        "features/cloudru-s3/03_adr/002-isolate-local-storage.md",
+        "features/cloudru-s3/05_architecture.md"
+      ],
+      "evidence": "ADR-001 Decision sends DeleteObject and treats success as physical deletion. Architecture commits purged after successful DELETE. apps/recognizer/src/consent/erasure-job.ts:152-156 and apps/recognizer/src/photo/purge-expired.ts:42-44 commit file state based on adapter success. Source reference /home/clipmkr/packages/s3/src/erasure.ts:19-20 explicitly rejects any GetBucketVersioning Status because delete markers conceal retained versions. No equivalent check appears in the proposed design."
+    }
+  ],
+  "reviewSeen": true,
+  "rework": true,
+  "changedPaths": []
+}

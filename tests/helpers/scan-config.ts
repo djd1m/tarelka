@@ -19,6 +19,8 @@ export function testScanApiConfig(overrides: { rateLimits?: RateLimits; quota?: 
     databaseUrl: process.env.DATABASE_URL ?? '',
     appOrigin: 'https://tarelka.test',
     storage: {
+      region: required('S3_REGION'),
+      forcePathStyle: required('S3_FORCE_PATH_STYLE') === 'true',
       endpoint: process.env.S3_ENDPOINT ?? 'http://storage:9000',
       bucket: process.env.S3_BUCKET ?? 'n4-photos',
       accessKey: required('S3_ACCESS_KEY'),
